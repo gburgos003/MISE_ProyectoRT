@@ -113,6 +113,8 @@ void StartTaskEnvioUART(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+uint16_t buffer1[1024];
+
 /* USER CODE END 0 */
 
 /**
@@ -439,6 +441,22 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	// METES MSG COLA
+
+
+
+
+	// OBTENER LOCK MUTEX ADC
+
+	// DECODIFICAR MSG CONFIG
+
+	// ENVIAR CONFIG
+
+	// LIBERAR MUTEX ADC
+}
+
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -470,9 +488,35 @@ void StartTaskLeerADC(void *argument)
 {
   /* USER CODE BEGIN StartTaskLeerADC */
   /* Infinite loop */
+	uint16_t dato = 0;
+	osStatus_t status;
+	int index_sample = 0;
+	uint32_t ticks = 0;
+
+	ticks = osKernelGetTickCount();
   for(;;)
   {
-    osDelay(1);
+	  // OBTENER MUTEX
+	  HAL_ADC_Start(&hadc1);
+	  status = HAL_ADC_PollForConversion(&hadc1, 1);
+	  if (status == HAL_OK) {
+		  dato = HAL_ADC_GetValue(&hadc1);
+	  }
+	  HAL_ADC_Stop(&hadc1);
+
+	  buffer1[index_sample] = dato;
+
+	  index_sample++;
+	  if (index_sample == 1024) {
+		  osEventFlagsSet(bufferFullHandle, 1);
+		  index_sample = 0;
+
+		  // LIBERA
+
+		  osDelayUntil(ticks + 1000);
+		  ticks = osKernelGetTickCount();
+	  }
+	  // osMessageQueuePut(colaDatos1Handle, &dato, 0, osWaitForever);
   }
   /* USER CODE END StartTaskLeerADC */
 }
@@ -490,7 +534,11 @@ void StartTaskEnvioUART(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  osEventFlagsWait(bufferFullHandle, 1, osFlagsNoClear, osWaitForever);
+
+	  osEventFlagsClear(bufferFullHandle, 1);
+
+	  HAL_UART_Transmit(&huart2, (uint8_t *) buffer1, sizeof(buffer1), osWaitForever);
   }
   /* USER CODE END StartTaskEnvioUART */
 }

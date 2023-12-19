@@ -862,3 +862,13 @@
 2023-12-19 16:03:21,008 [INFO] McuFinderGlobals:57 - Set McuFinderConnectedMode to true
 2023-12-19 16:03:21,010 [INFO] ApiDb:443 - Save user favorites file /users/1169087/.stm32cubeide/favorites.mcus.txt: 0 item(s)
 2023-12-19 16:03:21,011 [INFO] ApiDb:447 - User favorites MCUs=[]
+2023-12-19 18:32:54,841 [ERROR] RtosPanel:557 - Can not restore the selected Tab for FREERTOS(A reason can be that the tab is no more available.)
+2023-12-19 18:32:56,534 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:32:56,537 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:32:56,537 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0

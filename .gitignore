@@ -1,3 +1,4 @@
 Proyecto/Debug/
 
-programa_host/main
+programa_host/bin/
+programa_host/obj/
