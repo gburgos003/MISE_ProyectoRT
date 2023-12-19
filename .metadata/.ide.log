@@ -872,3 +872,290 @@
 2023-12-19 18:32:56,537 [INFO] TasksAndQueuesTab:756 - Dynamic
 2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:762 - 128 128
 2023-12-19 18:32:56,537 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:44:56,532 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 332980816 Bytes (1008730112)
+2023-12-19 18:44:57,751 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 610853456 Bytes (1008730112)
+2023-12-19 18:44:58,850 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 693690960 Bytes (1008730112)
+2023-12-19 18:45:00,291 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: NVIC
+2023-12-19 18:45:00,292 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: FREERTOS
+2023-12-19 18:45:00,292 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2023-12-19 18:45:00,292 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: TIM1_8
+2023-12-19 18:45:00,292 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: SYS
+2023-12-19 18:45:00,293 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: GPIO
+2023-12-19 18:45:00,293 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: ADC
+2023-12-19 18:45:00,294 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: RCC
+2023-12-19 18:45:00,294 [INFO] CodeGenerator:690 - code generatio: config db path: /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.common.mx_6.6.1.202207061420//db/
+2023-12-19 18:45:00,412 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp_save
+2023-12-19 18:45:00,450 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp
+2023-12-19 18:45:00,462 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp_save
+2023-12-19 18:45:00,502 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp
+2023-12-19 18:45:00,593 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:45:00,595 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:45:00,632 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:45:00,633 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:45:00,669 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:45:00,669 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:45:00,705 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:45:00,706 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:45:00,742 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:45:00,743 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:45:00,780 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:45:00,781 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:45:00,816 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:45:00,817 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:45:00,854 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:45:00,854 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:45:00,890 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:45:00,890 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:45:00,925 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:45:00,929 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:45:00,930 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:45:00,969 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:45:00,970 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:45:01,004 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:45:01,005 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:45:01,040 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:45:01,040 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:45:01,076 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:45:01,076 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:45:01,112 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:45:01,113 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:45:01,148 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:45:01,148 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:45:01,184 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:45:01,185 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:45:01,219 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:45:01,219 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:45:01,253 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:45:01,254 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h_save
+2023-12-19 18:45:01,296 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h
+2023-12-19 18:45:01,297 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c_save
+2023-12-19 18:45:01,333 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c
+2023-12-19 18:45:01,336 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c_save
+2023-12-19 18:45:01,375 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c
+2023-12-19 18:45:01,376 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h_save
+2023-12-19 18:45:01,410 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h
+2023-12-19 18:45:01,412 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c_save
+2023-12-19 18:45:01,463 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c
+2023-12-19 18:45:01,464 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp_save
+2023-12-19 18:45:01,498 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp
+2023-12-19 18:45:01,499 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h_save
+2023-12-19 18:45:01,539 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h
+2023-12-19 18:45:01,548 [WARN] IPConfigManager:3348 - IP not found : TIM
+2023-12-19 18:45:01,548 [WARN] CodeGenerator:3567 - IP not found : null
+2023-12-19 18:45:01,549 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h_save
+2023-12-19 18:45:01,586 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h
+2023-12-19 18:45:01,586 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c_save
+2023-12-19 18:45:01,657 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c
+2023-12-19 18:45:02,021 [INFO] ProjectBuilder:2919 - Time for Copy HAL[1] : 19mS.
+2023-12-19 18:45:02,023 [INFO] ProjectBuilder:4117 - Project Generator version: 3.17.1
+2023-12-19 18:45:02,173 [INFO] ConfigFileManager:1394 - The Die is : DIE431
+2023-12-19 18:45:02,973 [INFO] ProjectBuilder:4285 - Time for Generating toolchain IDE Files: 950mS.
+2023-12-19 18:45:02,973 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2023-12-19 18:45:02,974 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2023-12-19 18:48:36,372 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:36,373 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:36,377 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:36,377 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:36,377 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:36,377 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:36,377 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:36,377 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:36,377 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:37,768 [INFO] EditThreadDialog:703 - RAM SIZE (in KB): 128
+2023-12-19 18:48:37,768 [INFO] EditThreadDialog:705 - RAM SIZE (in words): 32768
+2023-12-19 18:48:56,417 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:56,417 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:56,417 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:56,417 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:56,417 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:56,418 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:56,418 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:48:56,418 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:48:56,418 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:48:57,315 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 689180472 Bytes (1063256064)
+2023-12-19 18:48:58,357 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 777260856 Bytes (1063256064)
+2023-12-19 18:48:59,763 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 316242224 Bytes (1063256064)
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: NVIC
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: FREERTOS
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: TIM1_8
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: SYS
+2023-12-19 18:49:01,168 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: GPIO
+2023-12-19 18:49:01,169 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: ADC
+2023-12-19 18:49:01,169 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: RCC
+2023-12-19 18:49:01,169 [INFO] CodeGenerator:690 - code generatio: config db path: /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.common.mx_6.6.1.202207061420//db/
+2023-12-19 18:49:01,268 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp_save
+2023-12-19 18:49:01,303 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp
+2023-12-19 18:49:01,311 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp_save
+2023-12-19 18:49:01,348 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp
+2023-12-19 18:49:01,412 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:49:01,413 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:49:01,448 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:49:01,449 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:49:01,484 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:49:01,485 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:49:01,520 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:49:01,520 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:49:01,556 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:49:01,557 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:49:01,594 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:49:01,594 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:49:01,629 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:49:01,629 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:49:01,665 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:49:01,666 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:49:01,700 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:49:01,701 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:49:01,735 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:49:01,738 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:49:01,739 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:49:01,779 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:49:01,779 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:49:01,813 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:49:01,814 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:49:01,848 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:49:01,848 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:49:01,883 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:49:01,884 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:49:01,919 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:49:01,920 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:49:01,953 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:49:01,954 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:49:01,989 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:49:01,990 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:49:02,024 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:49:02,025 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:49:02,059 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:49:02,060 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h_save
+2023-12-19 18:49:02,148 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h
+2023-12-19 18:49:02,149 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c_save
+2023-12-19 18:49:02,186 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c
+2023-12-19 18:49:02,189 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c_save
+2023-12-19 18:49:02,226 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c
+2023-12-19 18:49:02,227 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h_save
+2023-12-19 18:49:02,261 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h
+2023-12-19 18:49:02,262 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c_save
+2023-12-19 18:49:02,312 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c
+2023-12-19 18:49:02,313 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp_save
+2023-12-19 18:49:02,347 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp
+2023-12-19 18:49:02,348 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h_save
+2023-12-19 18:49:02,388 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h
+2023-12-19 18:49:02,396 [WARN] IPConfigManager:3348 - IP not found : TIM
+2023-12-19 18:49:02,396 [WARN] CodeGenerator:3567 - IP not found : null
+2023-12-19 18:49:02,397 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h_save
+2023-12-19 18:49:02,434 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h
+2023-12-19 18:49:02,434 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c_save
+2023-12-19 18:49:02,503 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c
+2023-12-19 18:49:02,802 [INFO] ProjectBuilder:2919 - Time for Copy HAL[1] : 18mS.
+2023-12-19 18:49:02,803 [INFO] ProjectBuilder:4117 - Project Generator version: 3.17.1
+2023-12-19 18:49:02,950 [INFO] ConfigFileManager:1394 - The Die is : DIE431
+2023-12-19 18:49:03,706 [INFO] ProjectBuilder:4285 - Time for Generating toolchain IDE Files: 903mS.
+2023-12-19 18:49:03,707 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 1mS.
+2023-12-19 18:49:03,707 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2023-12-19 18:51:05,275 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:05,275 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:05,276 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:05,276 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:05,276 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:05,276 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:05,276 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:05,276 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:05,276 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:09,582 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:09,582 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:09,582 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:09,582 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:09,582 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:09,582 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:09,582 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:09,582 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:09,583 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:24,999 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:24,999 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:24,999 [INFO] TasksAndQueuesTab:756 - Dynamic
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:762 - 128 128
+2023-12-19 18:51:24,999 [WARN] TasksAndQueuesTab:774 - max value is: 3840.0
+2023-12-19 18:51:26,882 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 529974312 Bytes (1063256064)
+2023-12-19 18:51:28,417 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 600678216 Bytes (1063256064)
+2023-12-19 18:51:29,513 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 706846552 Bytes (1063256064)
+2023-12-19 18:51:30,832 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: NVIC
+2023-12-19 18:51:30,832 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: FREERTOS
+2023-12-19 18:51:30,832 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2023-12-19 18:51:30,832 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: TIM1_8
+2023-12-19 18:51:30,832 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: SYS
+2023-12-19 18:51:30,833 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: GPIO
+2023-12-19 18:51:30,833 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: ADC
+2023-12-19 18:51:30,833 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: RCC
+2023-12-19 18:51:30,833 [INFO] CodeGenerator:690 - code generatio: config db path: /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.common.mx_6.6.1.202207061420//db/
+2023-12-19 18:51:30,990 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp_save
+2023-12-19 18:51:31,028 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/license.tmp
+2023-12-19 18:51:31,050 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp_save
+2023-12-19 18:51:31,087 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/gpio.tmp
+2023-12-19 18:51:31,141 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:51:31,142 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:51:31,177 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:51:31,177 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:51:31,211 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:51:31,212 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:51:31,246 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:51:31,246 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:51:31,281 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:51:31,282 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:51:31,318 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:51:31,318 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:51:31,352 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:51:31,353 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:51:31,389 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:51:31,389 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:51:31,425 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:51:31,425 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:51:31,460 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:51:31,462 [INFO] Middleware:1435 - No code input for Bsp Dependency
+2023-12-19 18:51:31,463 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp_save
+2023-12-19 18:51:31,498 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_inc.tmp
+2023-12-19 18:51:31,498 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp_save
+2023-12-19 18:51:31,532 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelInit.tmp
+2023-12-19 18:51:31,533 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp_save
+2023-12-19 18:51:31,567 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_kernelStart.tmp
+2023-12-19 18:51:31,567 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp_save
+2023-12-19 18:51:31,602 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_typedefs.tmp
+2023-12-19 18:51:31,603 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp_save
+2023-12-19 18:51:31,639 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_vars.tmp
+2023-12-19 18:51:31,639 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp_save
+2023-12-19 18:51:31,673 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_pfp.tmp
+2023-12-19 18:51:31,673 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp_save
+2023-12-19 18:51:31,709 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_obj_creat.tmp
+2023-12-19 18:51:31,709 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp_save
+2023-12-19 18:51:31,743 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_default_thread.tmp
+2023-12-19 18:51:31,744 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp_save
+2023-12-19 18:51:31,777 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/rtos_threads.tmp
+2023-12-19 18:51:31,778 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h_save
+2023-12-19 18:51:31,821 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/FreeRTOSConfig.h
+2023-12-19 18:51:31,821 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c_save
+2023-12-19 18:51:31,858 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/freertos.c
+2023-12-19 18:51:31,861 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c_save
+2023-12-19 18:51:31,898 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_it.c
+2023-12-19 18:51:31,898 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h_save
+2023-12-19 18:51:31,933 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_it.h
+2023-12-19 18:51:31,935 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c_save
+2023-12-19 18:51:31,985 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/stm32f4xx_hal_msp.c
+2023-12-19 18:51:31,986 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp_save
+2023-12-19 18:51:32,020 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/MXTmpFiles/system.tmp
+2023-12-19 18:51:32,022 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h_save
+2023-12-19 18:51:32,062 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/stm32f4xx_hal_conf.h
+2023-12-19 18:51:32,070 [WARN] IPConfigManager:3348 - IP not found : TIM
+2023-12-19 18:51:32,070 [WARN] CodeGenerator:3567 - IP not found : null
+2023-12-19 18:51:32,071 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h_save
+2023-12-19 18:51:32,108 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Inc/main.h
+2023-12-19 18:51:32,109 [INFO] CodeEngine:245 - oldGeneratedFile, /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c_save
+2023-12-19 18:51:32,176 [INFO] CodeEngine:269 - Generated code: /users/1169087/MISE_ProyectoRT/Proyecto/Core/Src/main.c
+2023-12-19 18:51:32,525 [INFO] ProjectBuilder:2919 - Time for Copy HAL[1] : 19mS.
+2023-12-19 18:51:32,527 [INFO] ProjectBuilder:4117 - Project Generator version: 3.17.1
+2023-12-19 18:51:32,673 [INFO] ConfigFileManager:1394 - The Die is : DIE431
+2023-12-19 18:51:33,227 [INFO] ProjectBuilder:4285 - Time for Generating toolchain IDE Files: 700mS.
+2023-12-19 18:51:33,227 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2023-12-19 18:51:33,227 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.

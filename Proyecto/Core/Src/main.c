@@ -46,10 +46,10 @@ TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart2;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for taskEnviarCmd */
+osThreadId_t taskEnviarCmdHandle;
+const osThreadAttr_t taskEnviarCmd_attributes = {
+  .name = "taskEnviarCmd",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -67,25 +67,15 @@ const osThreadAttr_t taskEnvioUART_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for colaDatos1 */
-osMessageQueueId_t colaDatos1Handle;
-const osMessageQueueAttr_t colaDatos1_attributes = {
-  .name = "colaDatos1"
+/* Definitions for colaCmd */
+osMessageQueueId_t colaCmdHandle;
+const osMessageQueueAttr_t colaCmd_attributes = {
+  .name = "colaCmd"
 };
-/* Definitions for colaDatos2 */
-osMessageQueueId_t colaDatos2Handle;
-const osMessageQueueAttr_t colaDatos2_attributes = {
-  .name = "colaDatos2"
-};
-/* Definitions for mutexDato1 */
-osMutexId_t mutexDato1Handle;
-const osMutexAttr_t mutexDato1_attributes = {
-  .name = "mutexDato1"
-};
-/* Definitions for mutexDato2 */
-osMutexId_t mutexDato2Handle;
-const osMutexAttr_t mutexDato2_attributes = {
-  .name = "mutexDato2"
+/* Definitions for mutexAdc */
+osMutexId_t mutexAdcHandle;
+const osMutexAttr_t mutexAdc_attributes = {
+  .name = "mutexAdc"
 };
 /* Definitions for bufferFull */
 osEventFlagsId_t bufferFullHandle;
@@ -102,7 +92,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
-void StartDefaultTask(void *argument);
+void StartTaskEnviarCmd(void *argument);
 void StartTaskLeerADC(void *argument);
 void StartTaskEnvioUART(void *argument);
 
@@ -114,6 +104,10 @@ void StartTaskEnvioUART(void *argument);
 /* USER CODE BEGIN 0 */
 
 uint16_t buffer1[1024];
+
+typedef enum {
+	SET_SAMPLE_RATE
+} command_t;
 
 /* USER CODE END 0 */
 
@@ -155,11 +149,8 @@ int main(void)
   /* Init scheduler */
   osKernelInitialize();
   /* Create the mutex(es) */
-  /* creation of mutexDato1 */
-  mutexDato1Handle = osMutexNew(&mutexDato1_attributes);
-
-  /* creation of mutexDato2 */
-  mutexDato2Handle = osMutexNew(&mutexDato2_attributes);
+  /* creation of mutexAdc */
+  mutexAdcHandle = osMutexNew(&mutexAdc_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -174,19 +165,16 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the queue(s) */
-  /* creation of colaDatos1 */
-  colaDatos1Handle = osMessageQueueNew (1024, sizeof(uint16_t), &colaDatos1_attributes);
-
-  /* creation of colaDatos2 */
-  colaDatos2Handle = osMessageQueueNew (1024, sizeof(uint16_t), &colaDatos2_attributes);
+  /* creation of colaCmd */
+  colaCmdHandle = osMessageQueueNew (32, sizeof(uint16_t), &colaCmd_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of taskEnviarCmd */
+  taskEnviarCmdHandle = osThreadNew(StartTaskEnviarCmd, NULL, &taskEnviarCmd_attributes);
 
   /* creation of taskLeerADC */
   taskLeerADCHandle = osThreadNew(StartTaskLeerADC, NULL, &taskLeerADC_attributes);
@@ -442,37 +430,44 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	// METES MSG COLA
-
-
-
-
-	// OBTENER LOCK MUTEX ADC
-
-	// DECODIFICAR MSG CONFIG
-
-	// ENVIAR CONFIG
-
-	// LIBERAR MUTEX ADC
+	// DECODIICAR MENSAJE RECIBIDO
+	// TODO
+	command_t cmd;
+	// METER CMD A LA COLA
+	osMessageQueuePut(colaCmdHandle, &cmd, 0, osWaitForever);
 }
 
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartTaskEnviarCmd */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the taskEnviarCmd thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartTaskEnviarCmd */
+void StartTaskEnviarCmd(void *argument)
 {
   /* USER CODE BEGIN 5 */
+	osStatus_t status;
+	command_t cmd;
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  // SACAR CMD DE LA COLA
+	  osMessageQueueGet(colaCmdHandle, &cmd, 0, osWaitForever);
+	  // OBTENER MUTEX ADC
+	  status = osMutexAcquire(mutexAdcHandle, osWaitForever);
+
+	  // CAMBIAR CONFIG ADC
+
+	  // CAMBIAR OTRAS CONFIGS (?)
+
+	  // LIBERAR MUTEX ADC
+	  status = osMutexRelease(mutexAdcHandle);
+	  osDelay(1);
   }
   /* USER CODE END 5 */
 }
@@ -494,30 +489,31 @@ void StartTaskLeerADC(void *argument)
 	uint32_t ticks = 0;
 
 	ticks = osKernelGetTickCount();
-  for(;;)
-  {
-	  // OBTENER MUTEX
-	  HAL_ADC_Start(&hadc1);
-	  status = HAL_ADC_PollForConversion(&hadc1, 1);
-	  if (status == HAL_OK) {
+	for(;;)
+	{
+		// OBTENER MUTEX
+		status = osMutexAcquire(mutexAdcHandle, osWaitForever);
+		HAL_ADC_Start(&hadc1);
+		status = HAL_ADC_PollForConversion(&hadc1, 1);
+		if (status == HAL_OK) {
 		  dato = HAL_ADC_GetValue(&hadc1);
-	  }
-	  HAL_ADC_Stop(&hadc1);
+		}
+		HAL_ADC_Stop(&hadc1);
 
-	  buffer1[index_sample] = dato;
+		buffer1[index_sample] = dato;
 
-	  index_sample++;
-	  if (index_sample == 1024) {
+		index_sample++;
+		if (index_sample == 1024) {
 		  osEventFlagsSet(bufferFullHandle, 1);
 		  index_sample = 0;
 
-		  // LIBERA
+		  status = osMutexRelease(mutexAdcHandle);
 
 		  osDelayUntil(ticks + 1000);
 		  ticks = osKernelGetTickCount();
-	  }
-	  // osMessageQueuePut(colaDatos1Handle, &dato, 0, osWaitForever);
-  }
+		}
+		// osMessageQueuePut(colaDatos1Handle, &dato, 0, osWaitForever);
+	}
   /* USER CODE END StartTaskLeerADC */
 }
 
