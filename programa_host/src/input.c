@@ -1,37 +1,7 @@
 #include "input.h"
-#include <string.h>
-#include <ctype.h>
-
-
-char screen[80 * 24 + 1] = "\
-*---*--------------------------------------------------------------------------*\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-| 0 |--------------------------------------------------------------------------|\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-|   |                                                                          |\
-*---*--------------------------------------------------------------------------*\
-| >>                                                                           |\
-*------------------------------------------------------------------------------*";
 
 int exit_signal = 0;
 
-char screen_line22[81] = "| >>                                                                           |";
 
 void * get_input(void *) {
     unsigned char c;
@@ -57,7 +27,7 @@ void * get_input(void *) {
             index++;
         }
 
-        copy_cmd(cmd);
+        print_cmd(cmd);
     }
 }
 
@@ -65,15 +35,6 @@ void clear_cmd_str(char * cmd_buffer) {
     for(int i = 0; i < sizeof(cmd_buffer); i++) {
         cmd_buffer[i] = '\0';
     }
-}
-
-
-void copy_cmd(char * cmd_buffer) {
-    int i = 0;
-    char c = cmd_buffer[i];
-
-    memcpy(&screen[80 * 22], screen_line22, 80);
-    memcpy(&screen[80 * 22 + 5], cmd_buffer, strlen(cmd_buffer));   
 }
 
 command_t decode_cmd(char * cmd_buffer) {

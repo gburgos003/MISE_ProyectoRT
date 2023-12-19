@@ -1,21 +1,23 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
 #include <pthread.h>
 #include "input.h"
-
-#define clear() printf("\033[H\033[J")
-
-void clear_to_top(void);
-void print_screen(void);
-void update_screen(void);
+#include "uart.h"
+#include "screen.h"
 
 int main()
 {
     int result;
-
     struct termios old_tio, new_tio;
+    RingBuffer data_buffer = create_ring_buffer();
 
+    log_file = fopen("log.txt", "w");
+    
+    if (log_file == NULL) {
+        printf("Error abriendo archivo de log\n");
+        exit(1);
+    }
+    
     /* get the terminal settings for stdin */
     tcgetattr(STDIN_FILENO, &old_tio);
 
@@ -28,45 +30,29 @@ int main()
     /* set the new settings immediately */
     tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
 
-    // init_screen(screen);
+    pthread_t handle_input;
+    pthread_t handle_data_stream;
 
-    pthread_t hilo_lectura;
-
-    result = pthread_create(&hilo_lectura, NULL, get_input, NULL);
+    result = pthread_create(&handle_input, NULL, get_input, NULL);
+    result = pthread_create(&handle_data_stream, NULL, recieve_data, (void *) &data_buffer);
 
     for(;;) {
         if (exit_signal) {
             break;
         }
-        update_screen();
+        update_screen(&data_buffer);
         clear_to_top();
         print_screen();
-        usleep(20000);
+        usleep(refresh_rate);
     }
 
-    pthread_join(hilo_lectura, NULL);
+    pthread_join(handle_input, NULL);
+    pthread_join(handle_data_stream, NULL);
 
     /* restore the former settings */
     tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
 
+    fclose(log_file);
+
     return 0;
-}
-
-void clear_to_top(void) {
-    clear();
-    fflush(stdout);
-}
-
-void print_screen(void) {
-    printf("%s", screen);
-    fflush(stdout);
-}
-
-void update_screen() {
-    static char caracter = '1';
-    static char index = 0;
-
-    screen[500] = caracter + index;
-
-    index = (++index) % 10;
 }

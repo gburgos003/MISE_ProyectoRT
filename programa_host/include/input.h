@@ -1,12 +1,13 @@
+#pragma once
+
 #include <stdio.h>
-#include <unistd.h>
+#include "screen.h"
 
 typedef enum {
     INVALID = 0,
     EXIT,
 } command_t;
 
-extern char screen[80 * 24 + 1];
 extern int exit_signal;
 
 void clear_cmd_str(char *);
