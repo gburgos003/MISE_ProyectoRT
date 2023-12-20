@@ -4,7 +4,7 @@ int exit_signal = 0;
 
 
 void * get_input(void *) {
-    unsigned char c;
+    char c;
     char cmd[40];
     int index;
 
@@ -38,11 +38,19 @@ void clear_cmd_str(char * cmd_buffer) {
 }
 
 command_t decode_cmd(char * cmd_buffer) {
-    char * command = strtok(cmd_buffer, " ");
-    
+    char command[10] = {0};
+    char arg1[10] = {0};
+    char arg2[10] = {0};
+    // char * command = strtok(cmd_buffer, " ");
+    sscanf(cmd_buffer, "%s %s %s", command, arg1, arg2);
     if (strcmp(command, "exit") == 0) {
         return EXIT;
     }
+
+    if (strcmp(command, "test") == 0) {
+        time_scale = 200;
+    }
+
 
     return INVALID;
 }

@@ -60,7 +60,7 @@ void * recieve_data(void * buffer) {
     // TODO
     buffer = (RingBuffer *) buffer;
 
-    int val = 0;
+    int val = 2048;
     // char *portname = "/dev/ttyUSB1";
 
     // int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -80,8 +80,8 @@ void * recieve_data(void * buffer) {
 
         push_ring_buffer(buffer, val);
 
-        val = (++val) % 4096;
+        // val = (++val) % 4096;
 
-        usleep(100);
+        usleep(9000);
     }
 }

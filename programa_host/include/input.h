@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include "screen.h"
+#include "update.h"
 
 typedef enum {
     INVALID = 0,
