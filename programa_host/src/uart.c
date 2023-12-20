@@ -87,7 +87,7 @@ void *recieve_data(void *buffer)
 
     int val = 2048;
     int num, index, data_ready;
-    unsigned char buf_tmp[100], buf[100];
+    unsigned char buf_tmp[250], buf[250];
     uint32_t *p_buf;
 
     for (;;)
@@ -97,7 +97,7 @@ void *recieve_data(void *buffer)
             break;
         }
 
-        num = read(fd_uart, buf_tmp, 100);
+        num = read(fd_uart, buf_tmp, 250);
         
 
         for (int i = 0; i < num; i++)
@@ -113,7 +113,7 @@ void *recieve_data(void *buffer)
             }
             else
             {
-                if (index > 100) // Maximo buf
+                if (index > 250) // Maximo buf
                 {
                     printf("Demasiados datos:\n");
                     index = 0;

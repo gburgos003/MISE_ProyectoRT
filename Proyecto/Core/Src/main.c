@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -32,6 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,10 +48,10 @@ TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart2;
 
-/* Definitions for taskEnviarCmd */
-osThreadId_t taskEnviarCmdHandle;
-const osThreadAttr_t taskEnviarCmd_attributes = {
-  .name = "taskEnviarCmd",
+/* Definitions for taskEjecutarCmd */
+osThreadId_t taskEjecutarCmdHandle;
+const osThreadAttr_t taskEjecutarCmd_attributes = {
+  .name = "taskEjecutarCmd",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -77,10 +79,10 @@ osMutexId_t mutexAdcHandle;
 const osMutexAttr_t mutexAdc_attributes = {
   .name = "mutexAdc"
 };
-/* Definitions for bufferFull */
-osEventFlagsId_t bufferFullHandle;
-const osEventFlagsAttr_t bufferFull_attributes = {
-  .name = "bufferFull"
+/* Definitions for systemFlags */
+osEventFlagsId_t systemFlagsHandle;
+const osEventFlagsAttr_t systemFlags_attributes = {
+  .name = "systemFlags"
 };
 /* USER CODE BEGIN PV */
 
@@ -92,7 +94,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
-void StartTaskEnviarCmd(void *argument);
+void StartTaskEjecutarCmd(void *argument);
 void StartTaskLeerADC(void *argument);
 void StartTaskEnvioUART(void *argument);
 
@@ -103,11 +105,22 @@ void StartTaskEnvioUART(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint16_t buffer1[1024];
+uint16_t bufferAdc[1024];
+uint8_t buffer_commands[2];
+
+int uart_time = 20;
+int n_samples = 100;
+int sample_time = 25;
 
 typedef enum {
-	SET_SAMPLE_RATE
-} command_t;
+	SET_UART_TIME = 0,
+	SET_SAMPLE_TIME,
+} command_id;
+
+typedef struct command {
+	command_id type;
+	uint8_t arg;
+} command;
 
 /* USER CODE END 0 */
 
@@ -166,15 +179,15 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of colaCmd */
-  colaCmdHandle = osMessageQueueNew (32, sizeof(uint16_t), &colaCmd_attributes);
+  colaCmdHandle = osMessageQueueNew (32, sizeof(command), &colaCmd_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of taskEnviarCmd */
-  taskEnviarCmdHandle = osThreadNew(StartTaskEnviarCmd, NULL, &taskEnviarCmd_attributes);
+  /* creation of taskEjecutarCmd */
+  taskEjecutarCmdHandle = osThreadNew(StartTaskEjecutarCmd, NULL, &taskEjecutarCmd_attributes);
 
   /* creation of taskLeerADC */
   taskLeerADCHandle = osThreadNew(StartTaskLeerADC, NULL, &taskLeerADC_attributes);
@@ -186,11 +199,13 @@ int main(void)
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
-  /* creation of bufferFull */
-  bufferFullHandle = osEventFlagsNew(&bufferFull_attributes);
+  /* creation of systemFlags */
+  systemFlagsHandle = osEventFlagsNew(&systemFlags_attributes);
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  HAL_UART_Receive_IT(&huart2, buffer_commands, sizeof(buffer_commands));
+
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -325,9 +340,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 10;
+  htim3.Init.Prescaler = 84;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 65535;
+  htim3.Init.Period = 25;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -432,41 +447,72 @@ static void MX_GPIO_Init(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	// DECODIICAR MENSAJE RECIBIDO
 	// TODO
-	command_t cmd;
+	command cmd;
+
+	if (buffer_commands[0] == 'U') {
+		cmd.type = SET_UART_TIME;
+		cmd.arg = buffer_commands[1];
+	} else if (buffer_commands[0] == 'T') {
+		cmd.type = SET_SAMPLE_TIME;
+		cmd.arg = buffer_commands[1];
+	}
+
 	// METER CMD A LA COLA
 	osMessageQueuePut(colaCmdHandle, &cmd, 0, osWaitForever);
+
+	HAL_UART_Receive_IT(&huart2, buffer_commands, sizeof(buffer_commands));
 }
 
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartTaskEnviarCmd */
+/* USER CODE BEGIN Header_StartTaskEjecutarCmd */
 /**
-  * @brief  Function implementing the taskEnviarCmd thread.
+  * @brief  Function implementing the taskEjecutarCmd thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartTaskEnviarCmd */
-void StartTaskEnviarCmd(void *argument)
+/* USER CODE END Header_StartTaskEjecutarCmd */
+void StartTaskEjecutarCmd(void *argument)
 {
   /* USER CODE BEGIN 5 */
 	osStatus_t status;
-	command_t cmd;
+	command cmd;
 
   /* Infinite loop */
   for(;;)
   {
 	  // SACAR CMD DE LA COLA
 	  osMessageQueueGet(colaCmdHandle, &cmd, 0, osWaitForever);
-	  // OBTENER MUTEX ADC
-	  status = osMutexAcquire(mutexAdcHandle, osWaitForever);
 
-	  // CAMBIAR CONFIG ADC
+	  switch (cmd.type) {
+	  case SET_UART_TIME:
+		  if (cmd.arg == 20) {
+			  n_samples = 100;
+		  } else {
+			  n_samples = 1;
+		  }
+		  uart_time = cmd.arg;
+		  break;
+	  case SET_SAMPLE_TIME:
+		  sample_time = cmd.arg;
 
-	  // CAMBIAR OTRAS CONFIGS (?)
+		  status = osMutexAcquire(mutexAdcHandle, osWaitForever);
 
-	  // LIBERAR MUTEX ADC
-	  status = osMutexRelease(mutexAdcHandle);
+		  // APAGAR TIMER
+
+		  // CONFIG TIMER
+
+		  // ENCENDER TIMER
+
+		  status = osMutexRelease(mutexAdcHandle);
+
+		  break;
+
+	  default:
+		  break;
+	  }
+
 	  osDelay(1);
   }
   /* USER CODE END 5 */
@@ -486,11 +532,11 @@ void StartTaskLeerADC(void *argument)
 	uint16_t dato = 0;
 	osStatus_t status;
 	int index_sample = 0;
-	uint32_t ticks = 0;
 
-	ticks = osKernelGetTickCount();
 	for(;;)
 	{
+		// osEventFlagsWait(systemFlagsHandle, TIMER_FLAG, osFlagsNoClear, osWaitForever);
+		// osEventFlagsClear(systemFlagsHandle, TIMER_FLAG);
 		// OBTENER MUTEX
 		status = osMutexAcquire(mutexAdcHandle, osWaitForever);
 		HAL_ADC_Start(&hadc1);
@@ -499,18 +545,14 @@ void StartTaskLeerADC(void *argument)
 		  dato = HAL_ADC_GetValue(&hadc1);
 		}
 		HAL_ADC_Stop(&hadc1);
+		status = osMutexRelease(mutexAdcHandle);
 
-		buffer1[index_sample] = dato;
+		bufferAdc[index_sample] = dato;
 
 		index_sample++;
-		if (index_sample == 1024) {
-		  osEventFlagsSet(bufferFullHandle, 1);
+		if (index_sample == n_samples) {
+		  osEventFlagsSet(systemFlagsHandle, BUFFER_FULL_FLAG);
 		  index_sample = 0;
-
-		  status = osMutexRelease(mutexAdcHandle);
-
-		  osDelayUntil(ticks + 1000);
-		  ticks = osKernelGetTickCount();
 		}
 		// osMessageQueuePut(colaDatos1Handle, &dato, 0, osWaitForever);
 	}
@@ -527,14 +569,26 @@ void StartTaskLeerADC(void *argument)
 void StartTaskEnvioUART(void *argument)
 {
   /* USER CODE BEGIN StartTaskEnvioUART */
-  /* Infinite loop */
+	char mensaje[202];
+
+	/* Infinite loop */
   for(;;)
   {
-	  osEventFlagsWait(bufferFullHandle, 1, osFlagsNoClear, osWaitForever);
+	  osEventFlagsWait(systemFlagsHandle, BUFFER_FULL_FLAG, osFlagsNoClear, osWaitForever);
+	  osEventFlagsClear(systemFlagsHandle, BUFFER_FULL_FLAG);
 
-	  osEventFlagsClear(bufferFullHandle, 1);
+	  mensaje[0] = 0xFE;
+//	  mensaje[1] = 0xFE;
+//	  mensaje[n_samples * 2 + 2] = 0xFF;
+//	  mensaje[n_samples * 2 + 3] = 0xFF;
+	  mensaje[n_samples * 2 + 1] = 0xFF;
 
-	  HAL_UART_Transmit(&huart2, (uint8_t *) buffer1, sizeof(buffer1), osWaitForever);
+	  memcpy(&mensaje[1], (uint8_t *) bufferAdc, n_samples * 2);
+
+	  HAL_UART_Transmit_IT(&huart2, (uint8_t *) mensaje, sizeof(mensaje));
+
+	  osDelay(uart_time);
+
   }
   /* USER CODE END StartTaskEnvioUART */
 }

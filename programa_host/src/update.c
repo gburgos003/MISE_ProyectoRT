@@ -6,8 +6,8 @@ void update(RingBuffer *buffer)
 {
     switch (time_scale)
     {
-    case TS_100US:
-    case TS_1MS:
+    case TS_2_5MS:
+    case TS_5MS:
     case TS_10MS:
         mode_0(buffer);
         break;
@@ -36,6 +36,7 @@ void mode_1(RingBuffer *buffer)
     /*Leer 1 dato del buffer del UART*/
     while (pop_ring_buffer(buffer, &val) != -1)
     {
+        fprintf(log_file, "%d\n", val);
         value = ((float) val / 4095.0) * 20.0; //0-20 unidad de medida
 
         row_pass(value, current_col);

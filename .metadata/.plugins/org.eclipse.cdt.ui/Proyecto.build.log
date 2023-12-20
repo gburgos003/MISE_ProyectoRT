@@ -1,10 +1,25 @@
-16:05:47 **** Incremental Build of configuration Debug for project Proyecto ****
+19:14:16 **** Incremental Build of configuration Debug for project Proyecto ****
 make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'StartTaskEjecutarCmd':
+../Core/Src/main.c:479:13: warning: variable 'status' set but not used [-Wunused-but-set-variable]
+  479 |  osStatus_t status;
+      |             ^~~~~~
+../Core/Src/main.c: In function 'StartTaskLeerADC':
+../Core/Src/main.c:544:14: warning: comparison between 'osStatus_t' and 'enum <anonymous>' [-Wenum-compare]
+  544 |   if (status == HAL_OK) {
+      |              ^~
+arm-none-eabi-gcc -o "Proyecto.elf" @"objects.list"   -mcpu=cortex-m4 -T"/users/1169087/MISE_ProyectoRT/Proyecto/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Proyecto.elf
+ 
 arm-none-eabi-size   Proyecto.elf 
+arm-none-eabi-objdump -h -S  Proyecto.elf  > "Proyecto.list"
    text	   data	    bss	    dec	    hex	filename
-  23496	     24	  20584	  44104	   ac48	Proyecto.elf
+  32504	     36	  22628	  55168	   d780	Proyecto.elf
 Finished building: default.size.stdout
  
+Finished building: Proyecto.list
+ 
 
-16:05:47 Build Finished. 0 errors, 0 warnings. (took 173ms)
+19:14:16 Build Finished. 0 errors, 2 warnings. (took 379ms)
 

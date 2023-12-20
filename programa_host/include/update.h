@@ -4,8 +4,8 @@
 #include "screen.h"
 
 typedef enum {
-    TS_100US = 100,
-    TS_1MS = 1000,
+    TS_2_5MS = 2500,
+    TS_5MS = 5000,
     TS_10MS = 10000,
     TS_100MS = 100000,
     TS_1S = 1000000,

@@ -28,10 +28,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "cmsis_os.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+
+extern osEventFlagsId_t systemFlagsHandle;
 
 /* USER CODE END ET */
 
@@ -53,6 +57,8 @@ void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void DebugMon_Handler(void);
 void SysTick_Handler(void);
+void TIM3_IRQHandler(void);
+void USART2_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
