@@ -82,7 +82,7 @@ void * recieve_data(void * buffer) {
 
         push_ring_buffer(buffer, val);
 
-        val = (val + 250) % 4096;
+        val = (val - 250) % 4096;
 
         //usleep(time_scale/COLS);
         sleep(1);

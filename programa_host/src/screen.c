@@ -57,22 +57,22 @@ void print_screen(void)
 
 void EscribirEnVentana(int fila, int columna, char valor)
 {
-    screen[(fila+1) * PRINT_COLS + columna + 9] = valor;
+    screen[(20-fila) * PRINT_COLS + columna + 9] = valor;
 }
 
 void row_pass(uint32_t value, int column)
 {
     // TODO
     static int valor_anterior = 0;
-    value = 20 - value;
 
     for (int i = 0; i < 20; i++)
     {
-        if ((i == value) || (valor_anterior < value) || (valor_anterior > value))
+        if (((i > valor_anterior) && (i <= value)) || ((i < valor_anterior) && (i >= value)))
         {
             EscribirEnVentana(i, column, '#');
             continue;
         }
+        
         EscribirEnVentana(i, column, ' ');
     }
 
