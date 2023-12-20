@@ -1,6 +1,8 @@
 #include "uart.h"
+#include <string.h>
 
 extern working_mode_t time_scale;
+int fd_uart = 0;
 
 int set_interface_attribs(int fd, int speed, int parity)
 {
@@ -58,33 +60,82 @@ void set_blocking(int fd, int should_block)
         fprintf(stderr, "error %d setting term attributes", errno);
 }
 
-void * recieve_data(void * buffer) {
+void enviar_comando_uart(char * comando)
+{
+    write(fd_uart,comando, strlen(comando));
+}
+
+void config_uart()
+{
+    char *portname = "/dev/ttyACM0";
+
+    fd_uart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
+    if (fd_uart < 0)
+    {
+        error_message("error %d opening %s: %s", errno, portname, strerror(errno));
+        return;
+    }
+
+    set_interface_attribs(fd_uart, B115200, 0); // set speed to 115,200 bps, 8n1 (no parity)
+    set_blocking(fd_uart, 0);                   // set no blocking
+}
+
+void *recieve_data(void *buffer)
+{
     // TODO
-    buffer = (RingBuffer *) buffer;
+    buffer = (RingBuffer *)buffer;
 
     int val = 2048;
-    // char *portname = "/dev/ttyUSB1";
+    int num, index, data_ready;
+    unsigned char buf_tmp[100],buf[100];
+    uint32_t * p_buf;
 
-    // int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
-    // if (fd < 0)
-    // {
-    //         error_message ("error %d opening %s: %s", errno, portname, strerror (errno));
-    //         return;
-    // }
-
-    // set_interface_attribs (fd, B115200, 0);  // set speed to 115,200 bps, 8n1 (no parity)
-    // set_blocking (fd, 0);                // set no blocking
-
-    for(;;) {
-        if (exit_signal) {
+    for (;;)
+    {
+        if (exit_signal)
+        {
             break;
         }
 
-        push_ring_buffer(buffer, val);
+        num = read(fd_uart, buf_tmp, 100);
 
-        val = (val - 250) % 4096;
+        for (int i = 0; i < num; i++)
+        {
+            if (buf_tmp[i] == 0xFE)
+            {
+                index = 0;
+                data_ready = 0;
+            }
+            else if (buf_tmp[i] == 0xFF)
+            {
+                data_ready = 1;
+            }
+            else
+            {
+                if (index > 100) //Maximo buf
+                {
+                    printf("Demasiados datos:\n");
+                    index = 0;
+                    data_ready = 0;
+                }
+                else //Rellenar buf
+                {
+                    buf[index] = buf_tmp[i];
+                    index++;
+                }
+            }
 
-        //usleep(time_scale/COLS);
-        sleep(1);
+            if (data_ready)
+            {
+                data_ready = 0;
+                p_buf = (uint32_t *) buf;
+
+                for (int i = 0; i < (index/sizeof(uint32_t)); i++)
+                {
+                    push_ring_buffer(buffer, p_buf[i] % 4096);  
+                }
+
+            }
+
     }
 }
