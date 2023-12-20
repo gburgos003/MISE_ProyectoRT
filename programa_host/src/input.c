@@ -18,7 +18,7 @@ void config_input(struct termios * old_tio, struct termios * new_tio) {
 
 void * get_input(void *) {
     char c;
-    char cmd[40];
+    char cmd[100];
     int index;
 
     while(!exit_signal) {
@@ -37,7 +37,9 @@ void * get_input(void *) {
             cmd[index] = 0;
         } else if (isalnum(c) || isspace(c)) {
             cmd[index] = c;
-            index++;
+            if (index < sizeof(cmd)) {
+                index++;
+            }
         }
 
         print_cmd(cmd);

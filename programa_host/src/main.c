@@ -22,7 +22,8 @@ int main()
     }
 
     config_input(&old_tio, &new_tio);
-
+    config_uart();
+    
     pthread_t handle_input;
     pthread_t handle_data_stream;
 

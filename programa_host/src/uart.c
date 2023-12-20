@@ -72,10 +72,10 @@ void config_uart()
     fd_uart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd_uart < 0)
     {
+        printf("UART: %d\n", fd_uart);
         fprintf(stderr, "error %d opening %s: %s", errno, portname, strerror(errno));
         return;
     }
-
     set_interface_attribs(fd_uart, B115200, 0); // set speed to 115,200 bps, 8n1 (no parity)
     set_blocking(fd_uart, 0);                   // set no blocking
 }
@@ -138,5 +138,6 @@ void *recieve_data(void *buffer)
             }
         }
         
+
     }
 }
