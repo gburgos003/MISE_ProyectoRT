@@ -1,5 +1,7 @@
 #include "uart.h"
 
+extern working_mode_t time_scale;
+
 int set_interface_attribs(int fd, int speed, int parity)
 {
     struct termios tty;
@@ -80,8 +82,9 @@ void * recieve_data(void * buffer) {
 
         push_ring_buffer(buffer, val);
 
-        // val = (++val) % 4096;
+        val = (val + 250) % 4096;
 
-        usleep(9000);
+        //usleep(time_scale/COLS);
+        sleep(1);
     }
 }

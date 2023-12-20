@@ -14,7 +14,7 @@ typedef enum {
 
 extern working_mode_t time_scale; // MICROSEGUNDOS
 
-void update(RingBuffer *, double elapsed);
+void update(RingBuffer *);
 
-void mode_0(RingBuffer *, double elapsed);
-void mode_1(RingBuffer *, double elapsed);
+void mode_0(RingBuffer *);
+void mode_1(RingBuffer *);
