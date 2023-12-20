@@ -30,12 +30,16 @@ char screen[80 * 24 + 1] = "\
 char screen_input_line[81] = "\
 | >>                                                                           |";
 
-int time_scale = 1000;
-int refresh_rate = 10000; // MICROSEGUNDOS
+int time_scale = 500;
+int refresh_rate = 1000; // MICROSEGUNDOS
 
 void clear_to_top(void) {
-    clear();
-    fflush(stdout);
+    // clear();
+    move_top_left();
+}
+
+void move_top_left(void) {
+    printf("\033[0;0H");
 }
 
 void print_cmd(char * cmd_buffer) {
@@ -56,9 +60,8 @@ void update_screen(RingBuffer * buffer) {
     int ret = 0;
 
     float time_per_col_millis = time_scale / COLS;
-    current_col = (int) ((number_of_frames * refresh_rate / 1000) / time_per_col_millis) % 70;
+    current_col = ((int) ((number_of_frames * refresh_rate / 1000) / time_per_col_millis) % 70) + 9;
 
-    // fprintf(log_file, "%d\n", current_col);
 
     while (pop_ring_buffer(buffer, &val) != -1)
     {
@@ -71,26 +74,27 @@ void update_screen(RingBuffer * buffer) {
     // }
     
     float media_float = (float) display_val;
-    int reversed_row = (int) ((media_float / 4095.0) * 20.0);
-    int value = 20 - reversed_row;
+    // float media_float = 4095;
+    int value = (int) ((media_float / 4095.0) * 20.0);
+    value = 20 - value;
 
     row_pass(value, current_col);
 
     // screen[row * 80 + (current_col + 9)] = '#';
 
-
     number_of_frames++;
-    // memcpy(screen, test, strlen(test));
 }
 
 void row_pass(uint32_t value, int column) {
     // TODO
-    for (int i = 0; i < 19; i++) {
+
+    fprintf(log_file, "%d\n", value);
+    for (int i = 0; i < 20; i++) {
         if (i == value) {
-            screen[(i + 1) * 80 + (column + 9)] = '#';
+            screen[(i + 1) * 80 + column] = '#';
             continue;
         }
 
-        screen[(i + 1) * 80 + (column + 9)] = ' ';
+        screen[(i + 1) * 80 + column] = ' ';
     }
 }

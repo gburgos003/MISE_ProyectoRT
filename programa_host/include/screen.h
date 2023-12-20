@@ -8,6 +8,7 @@
 #include "stdio.h"
 
 #define clear() printf("\033[H\033[J")
+
 #define COLS 70
 
 extern char screen[80 * 24 + 1];
@@ -19,6 +20,7 @@ extern int time_scale; // MILISEGUNDOS
 extern FILE * log_file;
 
 void clear_to_top(void);
+void move_top_left(void);
 void print_cmd(char *);
 void print_screen(void);
 void update_screen(RingBuffer *);
