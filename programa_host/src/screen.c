@@ -68,7 +68,7 @@ void row_pass(uint32_t value, int column)
 
     for (int i = 0; i < 20; i++)
     {
-        if ((i == value) || (valor_anterior < value))
+        if ((i == value) || (valor_anterior < value) || (valor_anterior > value))
         {
             EscribirEnVentana(i, column, '#');
             continue;
