@@ -60,9 +60,9 @@ void set_blocking(int fd, int should_block)
         fprintf(stderr, "error %d setting term attributes", errno);
 }
 
-void enviar_comando_uart(char * comando)
+void enviar_comando_uart(char *comando)
 {
-    write(fd_uart,comando, strlen(comando));
+    write(fd_uart, comando, strlen(comando));
 }
 
 void config_uart()
@@ -72,7 +72,7 @@ void config_uart()
     fd_uart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd_uart < 0)
     {
-        error_message("error %d opening %s: %s", errno, portname, strerror(errno));
+        fprintf(stderr, "error %d opening %s: %s", errno, portname, strerror(errno));
         return;
     }
 
@@ -87,8 +87,8 @@ void *recieve_data(void *buffer)
 
     int val = 2048;
     int num, index, data_ready;
-    unsigned char buf_tmp[100],buf[100];
-    uint32_t * p_buf;
+    unsigned char buf_tmp[100], buf[100];
+    uint32_t *p_buf;
 
     for (;;)
     {
@@ -98,6 +98,7 @@ void *recieve_data(void *buffer)
         }
 
         num = read(fd_uart, buf_tmp, 100);
+        
 
         for (int i = 0; i < num; i++)
         {
@@ -112,13 +113,13 @@ void *recieve_data(void *buffer)
             }
             else
             {
-                if (index > 100) //Maximo buf
+                if (index > 100) // Maximo buf
                 {
                     printf("Demasiados datos:\n");
                     index = 0;
                     data_ready = 0;
                 }
-                else //Rellenar buf
+                else // Rellenar buf
                 {
                     buf[index] = buf_tmp[i];
                     index++;
@@ -128,14 +129,14 @@ void *recieve_data(void *buffer)
             if (data_ready)
             {
                 data_ready = 0;
-                p_buf = (uint32_t *) buf;
+                p_buf = (uint32_t *)buf;
 
-                for (int i = 0; i < (index/sizeof(uint32_t)); i++)
+                for (int i = 0; i < (index / sizeof(uint32_t)); i++)
                 {
-                    push_ring_buffer(buffer, p_buf[i] % 4096);  
+                    push_ring_buffer(buffer, p_buf[i] % 4096);
                 }
-
             }
-
+        }
+        
     }
 }
