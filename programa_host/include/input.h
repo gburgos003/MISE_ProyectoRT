@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <termios.h>
 #include "screen.h"
 #include "update.h"
 
@@ -10,6 +11,8 @@ typedef enum {
 } command_t;
 
 extern int exit_signal;
+
+void config_input(struct termios *, struct termios *);
 
 void clear_cmd_str(char *);
 void * get_input(void *);
