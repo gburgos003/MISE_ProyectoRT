@@ -50,9 +50,6 @@ void y_Axi_scale(float maxValue, int precision)
     {
         dato = ((float) maxValue*i / (float) (precision-1));
         sprintf(text,"%1.2fV",dato);
-        // for (int j=0; j < strlen(text); j++){
-        //     screen[(GRAPH_ROWS -i) * PRINT_COLS + (2+j)] = text[j];
-        // }
         memcpy(&screen[(GRAPH_ROWS-i) * PRINT_COLS + 2], text, strlen(text));
 
     }
@@ -114,7 +111,7 @@ void col_pass(uint32_t value, int column)
     // TODO
     static int valor_anterior = 0;
 
-    fprintf(log_file, "%d\n", value);
+    // fprintf(log_file, "%d\n", value);
 
     for (int i = 0; i < GRAPH_ROWS; i++)
     {

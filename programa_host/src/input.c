@@ -52,9 +52,7 @@ void * get_input(void *) {
 }
 
 void clear_cmd_str(char * cmd_buffer) {
-    for(int i = 0; i < sizeof(cmd_buffer); i++) {
-        cmd_buffer[i] = '\0';
-    }
+    memset(cmd_buffer, '\0', 100);
 }
 
 int decode_cmd(char * cmd_buffer) {
@@ -74,6 +72,8 @@ int decode_cmd(char * cmd_buffer) {
             if(strcmp(arg2, "10s") == 0) {
                 cmdU[1] = 100;
                 cmdT[1] = 50;
+
+                fprintf(log_file, "CMDU: %d %d\nCMDT: %d %d\n", cmdU[0], cmdU[1], cmdT[0], cmdT[1]);
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
