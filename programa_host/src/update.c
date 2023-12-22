@@ -37,9 +37,9 @@ void mode_1(RingBuffer *buffer)
     while (pop_ring_buffer(buffer, &val) != -1)
     {
         // fprintf(log_file, "%d\n", val);
-        value = ((float) val / 4095.0) * 20.0; //0-20 unidad de medida
+        value = ((float) val / 4095.0) * (float) (GRAPH_ROWS - 1); //0-20 unidad de medida
 
-        col_pass(value, current_col);
+        col_pass(round(value), current_col);
 
         current_col = (current_col + 1) % COLS;
     }

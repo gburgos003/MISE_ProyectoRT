@@ -27,6 +27,8 @@ void * get_input(void *) {
     while(!exit_signal) {
         c = getchar();
 
+        // fprintf(log_file, "%c\n", c);
+
         if (c == '\n') {
             int cmd_status = decode_cmd(cmd);
             // TODO Hacer algo con este status

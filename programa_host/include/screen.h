@@ -11,7 +11,11 @@
 
 #define COLS 100
 #define PRINT_COLS 110
-#define PRINT_ROWS 24
+#define PRINT_ROWS 25
+#define CMD_ROW (PRINT_ROWS - 2)
+#define GRAPH_ROWS 21
+#define GRAPH_ROW_OFFSET 1
+#define GRAPH_COL_OFFSET 9
 #define REFRESH_RATE 10000 // uSecs
 
 extern char screen[PRINT_COLS * PRINT_ROWS + 1];

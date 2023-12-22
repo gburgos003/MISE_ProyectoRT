@@ -2,6 +2,7 @@
 
 #include "ringbuffer.h"
 #include "screen.h"
+#include "math.h"
 
 typedef enum {
     TS_2_5MS = 2500,

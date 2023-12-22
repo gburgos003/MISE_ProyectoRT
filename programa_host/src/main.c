@@ -25,6 +25,7 @@ int main()
     if (config_uart() == -1) {
         tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
         fprintf(stderr, "ERROR ABRIENDO UART\n");
+        exit(1);
     }
     
     pthread_t handle_input;
@@ -34,7 +35,7 @@ int main()
     result = pthread_create(&handle_data_stream, NULL, recieve_data, (void *) &data_buffer);
 
     gettimeofday(&t1, NULL);
-    y_Axi_scale(3.33,20);
+    y_Axi_scale(3.33,GRAPH_ROWS);
     
     for(;;) {
         if (exit_signal) {
