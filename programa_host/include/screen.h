@@ -18,6 +18,7 @@ extern char screen[PRINT_COLS * PRINT_ROWS + 1];
 extern char screen_input_line[PRINT_COLS + 1];
 extern int refresh_rate;
 
+
 extern FILE * log_file;
 
 void clear_to_top(void);
@@ -25,3 +26,4 @@ void move_top_left(void);
 void print_cmd(char *);
 void print_screen(void);
 void row_pass(uint32_t, int);
+void y_Axi_scale(float maxValue, int precision);

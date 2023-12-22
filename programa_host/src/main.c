@@ -31,6 +31,7 @@ int main()
     result = pthread_create(&handle_data_stream, NULL, recieve_data, (void *) &data_buffer);
 
     gettimeofday(&t1, NULL);
+    y_Axi_scale(3.33,20);
     
     for(;;) {
         if (exit_signal) {

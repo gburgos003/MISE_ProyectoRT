@@ -38,6 +38,20 @@ void clear_to_top(void)
     move_top_left();
 }
 
+void y_Axi_scale(float maxValue, int precision)
+{
+    char text[10];
+    float dato;
+    for (int i = precision; i > 0; i-=2)
+    {
+        dato = ((float) maxValue*i / (float) precision);
+        sprintf(text,"%0.2fV",dato);
+        for (int j=0; j < strlen(text); j++){
+            screen[(20-i+1) * PRINT_COLS + (2+j)] = text[j];
+        }
+    }
+}
+
 void move_top_left(void)
 {
     printf("\033[0;0H");
@@ -57,7 +71,7 @@ void print_screen(void)
 
 void EscribirEnVentana(int fila, int columna, char valor)
 {
-    screen[(20-fila) * PRINT_COLS + columna + 9] = valor;
+    screen[(20 - fila) * PRINT_COLS + columna + 9] = valor;
 }
 
 void row_pass(uint32_t value, int column)
@@ -72,7 +86,7 @@ void row_pass(uint32_t value, int column)
             EscribirEnVentana(i, column, '#');
             continue;
         }
-        
+
         EscribirEnVentana(i, column, ' ');
     }
 
