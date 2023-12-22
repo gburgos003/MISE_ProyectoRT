@@ -2,6 +2,9 @@
 
 int exit_signal = 0;
 
+unsigned char cmdU[2] = {'U', 100};
+unsigned char cmdT[2] = {'T', 50};
+
 void config_input(struct termios * old_tio, struct termios * new_tio) {
     /* get the terminal settings for stdin */
     tcgetattr(STDIN_FILENO, old_tio);
@@ -25,8 +28,8 @@ void * get_input(void *) {
         c = getchar();
 
         if (c == '\n') {
-            command_t decoded_cmd = decode_cmd(cmd);
-            execute_cmd(decoded_cmd);
+            int cmd_status = decode_cmd(cmd);
+            // TODO Hacer algo con este status
 
             clear_cmd_str(cmd);
             index = 0;
@@ -52,32 +55,70 @@ void clear_cmd_str(char * cmd_buffer) {
     }
 }
 
-command_t decode_cmd(char * cmd_buffer) {
+int decode_cmd(char * cmd_buffer) {
     char command[10] = {0};
     char arg1[10] = {0};
     char arg2[10] = {0};
+
     // char * command = strtok(cmd_buffer, " ");
     sscanf(cmd_buffer, "%s %s %s", command, arg1, arg2);
     if (strcmp(command, "exit") == 0) {
-        return EXIT;
-    }
-
-    if (strcmp(command, "test") == 0) {
-        time_scale = 200;
-    }
-
-
-    return INVALID;
-}
-
-void execute_cmd(command_t decoded_cmd) {
-    switch (decoded_cmd)
-    {
-    case EXIT:
         exit_signal = 1;
-        break;
-    
-    default:
-        break;
+        return 0;
     }
+
+    if (strcmp(command, "timescale") == 0) {
+        if (strcmp(arg1, "set") == 0) {
+            if(strcmp(arg2, "10s") == 0) {
+                cmdU[1] = 100;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_10S;
+            } else if(strcmp(arg2, "1s") == 0) {
+                cmdU[1] = 10;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_1S;
+            } else if(strcmp(arg2, "100ms") == 0) {
+                cmdU[1] = 1;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_100MS;
+            } else if(strcmp(arg2, "10ms") == 0) {
+                cmdU[1] = 20;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_10MS;
+            } else if(strcmp(arg2, "5ms") == 0) {
+                cmdU[1] = 20;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_5MS;
+            } else if(strcmp(arg2, "2.5ms") == 0) {
+                cmdU[1] = 20;
+                cmdT[1] = 50;
+
+                enviar_comando_uart(cmdU);
+                enviar_comando_uart(cmdT);
+                time_scale = TS_2_5MS;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+
+
+    return -1;
 }

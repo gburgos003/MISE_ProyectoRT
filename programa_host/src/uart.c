@@ -60,24 +60,43 @@ void set_blocking(int fd, int should_block)
         fprintf(stderr, "error %d setting term attributes", errno);
 }
 
-void enviar_comando_uart(char *comando)
+void enviar_comando_uart(unsigned char *comando)
 {
     write(fd_uart, comando, strlen(comando));
 }
 
-void config_uart()
+int config_uart()
 {
     char *portname = "/dev/ttyACM0";
 
     fd_uart = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd_uart < 0)
     {
-        printf("UART: %d\n", fd_uart);
-        fprintf(stderr, "error %d opening %s: %s", errno, portname, strerror(errno));
-        return;
+        return -1;
     }
     set_interface_attribs(fd_uart, B115200, 0); // set speed to 115,200 bps, 8n1 (no parity)
     set_blocking(fd_uart, 0);                   // set no blocking
+
+    unsigned char comando_uart_inicial[2] = {'U', 100};
+    unsigned char comando_sample_time_inicial[2] = {'S', 50};
+
+    enviar_comando_uart(comando_uart_inicial);
+    enviar_comando_uart(comando_sample_time_inicial);
+
+    return 0;
+}
+
+void insertar_buffer(RingBuffer * buffer, unsigned char * data_buffer, int index) {
+    uint16_t * data_buffer_ptr = (uint16_t *) data_buffer;
+    
+    // fprintf(log_file, "INDEX %d\n", index);
+
+    for (int i = 0; i < index / sizeof(uint16_t); i++) {
+        push_ring_buffer(buffer, data_buffer_ptr[i] % 4096);
+
+        // fprintf(log_file, "%d", data_buffer_ptr[i]);
+    }
+    // fprintf(log_file, "\n");
 }
 
 void *recieve_data(void *buffer)
@@ -89,6 +108,8 @@ void *recieve_data(void *buffer)
     int num, index, data_ready;
     unsigned char buf_tmp[250], buf[250];
     uint32_t *p_buf;
+    unsigned char c;
+    estado_uart estado;
 
     for (;;)
     {
@@ -102,42 +123,42 @@ void *recieve_data(void *buffer)
 
         for (int i = 0; i < num; i++)
         {
-            if (buf_tmp[i] == 0xFE)
-            {
-                index = 0;
-                data_ready = 0;
-            }
-            else if (buf_tmp[i] == 0xFF)
-            {
-                data_ready = 1;
-            }
-            else
-            {
-                if (index > 250) // Maximo buf
-                {
-                    printf("Demasiados datos:\n");
-                    index = 0;
-                    data_ready = 0;
-                }
-                else // Rellenar buf
-                {
-                    buf[index] = buf_tmp[i];
+            c = buf_tmp[i];
+
+            // fprintf(log_file, "%x\n", c);
+
+            switch (estado) {
+                case INIT:
+                    if (c == BYTE_CABECERA) {
+                        estado = CABECERA;
+                    }
+                    break;
+                case CABECERA:
+                    if (c == BYTE_CABECERA) {
+                        estado = DATO;
+                        index = 0;
+                    } else {
+                        estado = INIT;
+                    }
+                    break;
+                case DATO:
+                    buf[index] = c;
                     index++;
-                }
-            }
-
-            if (data_ready)
-            {
-                data_ready = 0;
-                p_buf = (uint32_t *)buf;
-
-                for (int i = 0; i < (index / sizeof(uint32_t)); i++)
-                {
-                    push_ring_buffer(buffer, p_buf[i] % 4096);
-                }
+                    if (c == BYTE_COLA) {
+                        estado = COLA;
+                    }
+                    break;
+                case COLA:
+                    if (c == BYTE_COLA) {
+                        estado = INIT;
+                        index--;
+                        insertar_buffer(buffer, buf, index);
+                    } else {
+                        estado = DATO;
+                        buf[index] = c;
+                        index++;
+                    }
             }
         }
-        
-
     }
 }

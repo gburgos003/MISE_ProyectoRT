@@ -4,11 +4,10 @@
 #include <termios.h>
 #include "screen.h"
 #include "update.h"
+#include "uart.h"
 
-typedef enum {
-    INVALID = 0,
-    EXIT,
-} command_t;
+extern unsigned char cmdU[2];
+extern unsigned char cmdT[2];
 
 extern int exit_signal;
 
@@ -18,5 +17,4 @@ void clear_cmd_str(char *);
 void * get_input(void *);
 void copy_cmd(char *);
 
-command_t decode_cmd(char *);
-void execute_cmd(command_t);
+int decode_cmd(char *);

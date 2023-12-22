@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -79,6 +78,11 @@ osMutexId_t mutexAdcHandle;
 const osMutexAttr_t mutexAdc_attributes = {
   .name = "mutexAdc"
 };
+/* Definitions for mutexBuffer */
+osMutexId_t mutexBufferHandle;
+const osMutexAttr_t mutexBuffer_attributes = {
+  .name = "mutexBuffer"
+};
 /* Definitions for systemFlags */
 osEventFlagsId_t systemFlagsHandle;
 const osEventFlagsAttr_t systemFlags_attributes = {
@@ -108,8 +112,8 @@ void StartTaskEnvioUART(void *argument);
 uint16_t bufferAdc[1024];
 uint8_t buffer_commands[2];
 
-int uart_time = 20;
-int n_samples = 100;
+int uart_time = 10;
+int n_samples = 1;
 int sample_time = 25;
 
 typedef enum {
@@ -164,6 +168,9 @@ int main(void)
   /* Create the mutex(es) */
   /* creation of mutexAdc */
   mutexAdcHandle = osMutexNew(&mutexAdc_attributes);
+
+  /* creation of mutexBuffer */
+  mutexBufferHandle = osMutexNew(&mutexBuffer_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -452,7 +459,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	if (buffer_commands[0] == 'U') {
 		cmd.type = SET_UART_TIME;
 		cmd.arg = buffer_commands[1];
-	} else if (buffer_commands[0] == 'T') {
+	} else if (buffer_commands[0] == 'S') {
 		cmd.type = SET_SAMPLE_TIME;
 		cmd.arg = buffer_commands[1];
 	}
@@ -547,7 +554,9 @@ void StartTaskLeerADC(void *argument)
 		HAL_ADC_Stop(&hadc1);
 		status = osMutexRelease(mutexAdcHandle);
 
+		status = osMutexAcquire(mutexBufferHandle, osWaitForever);
 		bufferAdc[index_sample] = dato;
+		status = osMutexRelease(mutexBufferHandle);
 
 		index_sample++;
 		if (index_sample == n_samples) {
@@ -570,6 +579,7 @@ void StartTaskEnvioUART(void *argument)
 {
   /* USER CODE BEGIN StartTaskEnvioUART */
 	char mensaje[202];
+	osStatus_t status;
 
 	/* Infinite loop */
   for(;;)
@@ -578,14 +588,16 @@ void StartTaskEnvioUART(void *argument)
 	  osEventFlagsClear(systemFlagsHandle, BUFFER_FULL_FLAG);
 
 	  mensaje[0] = 0xFE;
-//	  mensaje[1] = 0xFE;
-//	  mensaje[n_samples * 2 + 2] = 0xFF;
-//	  mensaje[n_samples * 2 + 3] = 0xFF;
-	  mensaje[n_samples * 2 + 1] = 0xFF;
+	  mensaje[1] = 0xFE;
+	  mensaje[n_samples * 2 + 2] = 0xFF;
+	  mensaje[n_samples * 2 + 3] = 0xFF;
+//	  mensaje[n_samples * 2 + 1] = 0xFF;
 
-	  memcpy(&mensaje[1], (uint8_t *) bufferAdc, n_samples * 2);
+	  status = osMutexAcquire(mutexBufferHandle, osWaitForever);
+	  memcpy(&mensaje[2], (uint8_t *) bufferAdc, n_samples * 2);
+	  status = osMutexRelease(mutexBufferHandle);
 
-	  HAL_UART_Transmit_IT(&huart2, (uint8_t *) mensaje, sizeof(mensaje));
+	  HAL_UART_Transmit_IT(&huart2, (uint8_t *) mensaje, n_samples * 2 + 4);
 
 	  osDelay(uart_time);
 

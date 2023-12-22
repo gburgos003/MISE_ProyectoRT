@@ -25,5 +25,5 @@ void clear_to_top(void);
 void move_top_left(void);
 void print_cmd(char *);
 void print_screen(void);
-void row_pass(uint32_t, int);
 void y_Axi_scale(float maxValue, int precision);
+void col_pass(uint32_t, int);
