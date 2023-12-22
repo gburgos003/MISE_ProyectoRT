@@ -19,3 +19,5 @@ void update(RingBuffer *);
 
 void mode_0(RingBuffer *);
 void mode_1(RingBuffer *);
+
+void cambiar_eje_x(working_mode_t);

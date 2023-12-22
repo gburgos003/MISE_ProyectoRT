@@ -19,7 +19,7 @@ int set_interface_attribs(int fd, int speed, int parity)
     tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8; // 8-bit chars
     // disable IGNBRK for mismatched speed tests; otherwise receive break
     // as \000 chars
-    tty.c_iflag &= ~IGNBRK; // disable break processing
+    // tty.c_iflag &= ~IGNBRK; // disable break processing
     tty.c_lflag = 0;        // no signaling chars, no echo,
                             // no canonical processing
     tty.c_oflag = 0;        // no remapping, no delays
@@ -91,14 +91,16 @@ int config_uart()
 void insertar_buffer(RingBuffer * buffer, unsigned char * data_buffer, int index) {
     uint16_t * data_buffer_ptr = (uint16_t *) data_buffer;
     
-    // fprintf(log_file, "INDEX %d\n", index);
+    fprintf(log_file, "PALABRA: ");
 
     for (int i = 0; i < index / sizeof(uint16_t); i++) {
         push_ring_buffer(buffer, data_buffer_ptr[i] % 4096);
 
-        // fprintf(log_file, "%d", data_buffer_ptr[i]);
+        fprintf(log_file, "%x", data_buffer_ptr[i]);
     }
-    // fprintf(log_file, "\n");
+    fprintf(log_file, "\n");
+
+    fflush(log_file);
 }
 
 void *recieve_data(void *buffer)
@@ -106,7 +108,6 @@ void *recieve_data(void *buffer)
     // TODO
     buffer = (RingBuffer *)buffer;
 
-    int val = 2048;
     int num, index, data_ready;
     unsigned char buf_tmp[250], buf[250];
     uint32_t *p_buf;
@@ -121,13 +122,12 @@ void *recieve_data(void *buffer)
         }
 
         num = read(fd_uart, buf_tmp, 250);
-        
 
         for (int i = 0; i < num; i++)
         {
             c = buf_tmp[i];
 
-            // fprintf(log_file, "%x\n", c);
+            fprintf(log_file, "BYTE: %x\n", c);
 
             switch (estado) {
                 case INIT:

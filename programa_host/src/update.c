@@ -9,7 +9,7 @@ void update(RingBuffer *buffer)
     case TS_2_5MS:
     case TS_5MS:
     case TS_10MS:
-        mode_0(buffer);
+        mode_1(buffer);
         break;
 
     case TS_100MS:
@@ -25,6 +25,14 @@ void update(RingBuffer *buffer)
 
 void mode_0(RingBuffer *buffer)
 {
+    uint16_t val = 0;
+    int index = 0;
+
+    while (pop_ring_buffer(buffer, &val) != -1)
+    {
+        
+    }
+    
 }
 
 void mode_1(RingBuffer *buffer)
@@ -43,4 +51,34 @@ void mode_1(RingBuffer *buffer)
 
         current_col = (current_col + 1) % COLS;
     }
+}
+
+void cambiar_eje_x(working_mode_t t_scale){
+    char tiempo[10];
+    switch (t_scale)
+    {
+    case TS_2_5MS:
+        memcpy(tiempo,"2.5ms",6);
+        break;
+    case TS_5MS:
+        memcpy(tiempo,"  5ms",6);
+        break;
+    case TS_10MS:
+        memcpy(tiempo," 10ms",6);
+        break;
+    case TS_100MS:
+        memcpy(tiempo,"100ms",6);
+        break;
+    case TS_1S:
+        memcpy(tiempo,"   1s",6);
+        break;
+    case TS_10S:
+        memcpy(tiempo,"  10s",6);
+        break;
+    
+    default:
+        break;
+    }
+    // sprintf(tiempo,"%5d",t_s/1000000);
+    memcpy(&screen[(PRINT_ROWS - 4) * PRINT_COLS + (PRINT_COLS - 6)], tiempo, strlen(tiempo));
 }

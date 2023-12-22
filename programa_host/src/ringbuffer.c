@@ -1,5 +1,7 @@
 #include "ringbuffer.h"
 
+RingBuffer data_buffer;
+
 RingBuffer create_ring_buffer() {
     RingBuffer buf;
 
@@ -42,4 +44,9 @@ int push_ring_buffer(RingBuffer * buffer, uint16_t data_value) {
     buffer->data[buffer->write_index] = data_value;
     buffer->write_index = next;
     return 0;
+}
+
+void vaciar_ring_buffer(RingBuffer * buffer) {
+    buffer->read_index = 0;
+    buffer->write_index = 0;
 }

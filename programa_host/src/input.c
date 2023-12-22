@@ -40,7 +40,7 @@ void * get_input(void *) {
                 index--;
             }
             cmd[index] = 0;
-        } else if (isalnum(c) || isspace(c)) {
+        } else if (isalnum(c) || isspace(c) || c == '.') {
             cmd[index] = c;
             if (index < sizeof(cmd)) {
                 index++;
@@ -116,6 +116,9 @@ int decode_cmd(char * cmd_buffer) {
             } else {
                 return -1;
             }
+
+            vaciar_ring_buffer(&data_buffer);
+            cambiar_eje_x(time_scale);
         } else {
             return -1;
         }

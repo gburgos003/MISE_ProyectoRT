@@ -10,7 +10,7 @@ int main()
 {
     int result;
     struct termios old_tio, new_tio;
-    RingBuffer data_buffer = create_ring_buffer();
+    data_buffer = create_ring_buffer();
     struct timeval t1, t2;
     double elapsed = 0.0;
 
@@ -35,12 +35,14 @@ int main()
     result = pthread_create(&handle_data_stream, NULL, recieve_data, (void *) &data_buffer);
 
     gettimeofday(&t1, NULL);
-    y_Axi_scale(3.33,GRAPH_ROWS);
+    cambiar_eje_y(3.33,GRAPH_ROWS);
     
     for(;;) {
         if (exit_signal) {
             break;
         }
+
+        
 
 
         gettimeofday(&t2, NULL);

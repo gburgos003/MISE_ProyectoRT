@@ -11,6 +11,9 @@ typedef struct RingBuffer {
     int read_index;
 } RingBuffer;
 
+extern RingBuffer data_buffer;
+
 RingBuffer create_ring_buffer(void);
 int pop_ring_buffer(RingBuffer *, uint16_t *);
 int push_ring_buffer(RingBuffer *, uint16_t);
+void vaciar_ring_buffer(RingBuffer *);

@@ -6,7 +6,6 @@
 
 #include "ringbuffer.h"
 #include "stdio.h"
-#include "update.h"
 
 #define clear() printf("\033[H\033[J")
 
@@ -30,5 +29,5 @@ void clear_to_top(void);
 void move_top_left(void);
 void print_cmd(char *);
 void print_screen(void);
-void y_Axi_scale(float maxValue, int precision);
+void cambiar_eje_y(float, int);
 void col_pass(uint32_t, int);
