@@ -1,25 +1,34 @@
-19:14:16 **** Incremental Build of configuration Debug for project Proyecto ****
+12:08:48 **** Incremental Build of configuration Debug for project Proyecto ****
 make -j16 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'StartTaskEjecutarCmd':
-../Core/Src/main.c:479:13: warning: variable 'status' set but not used [-Wunused-but-set-variable]
-  479 |  osStatus_t status;
+../Core/Src/main.c:486:13: warning: variable 'status' set but not used [-Wunused-but-set-variable]
+  486 |  osStatus_t status;
       |             ^~~~~~
 ../Core/Src/main.c: In function 'StartTaskLeerADC':
-../Core/Src/main.c:544:14: warning: comparison between 'osStatus_t' and 'enum <anonymous>' [-Wenum-compare]
-  544 |   if (status == HAL_OK) {
+../Core/Src/main.c:551:14: warning: comparison between 'osStatus_t' and 'enum <anonymous>' [-Wenum-compare]
+  551 |   if (status == HAL_OK) {
       |              ^~
+../Core/Src/main.c: In function 'StartTaskEnvioUART':
+../Core/Src/main.c:595:4: warning: implicit declaration of function 'memcpy' [-Wimplicit-function-declaration]
+  595 |    memcpy(&mensaje[2], (uint8_t *) bufferAdc, n_samples * 2);
+      |    ^~~~~~
+../Core/Src/main.c:595:4: warning: incompatible implicit declaration of built-in function 'memcpy'
+../Core/Src/main.c:22:1: note: include '<string.h>' or provide a declaration of 'memcpy'
+   21 | #include "cmsis_os.h"
+  +++ |+#include <string.h>
+   22 | 
 arm-none-eabi-gcc -o "Proyecto.elf" @"objects.list"   -mcpu=cortex-m4 -T"/users/1169087/MISE_ProyectoRT/Proyecto/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Proyecto.elf
  
 arm-none-eabi-size   Proyecto.elf 
 arm-none-eabi-objdump -h -S  Proyecto.elf  > "Proyecto.list"
    text	   data	    bss	    dec	    hex	filename
-  32504	     36	  22628	  55168	   d780	Proyecto.elf
+  32596	     36	  22628	  55260	   d7dc	Proyecto.elf
 Finished building: default.size.stdout
  
 Finished building: Proyecto.list
  
 
-19:14:16 Build Finished. 0 errors, 2 warnings. (took 379ms)
+12:08:49 Build Finished. 0 errors, 4 warnings. (took 325ms)
 

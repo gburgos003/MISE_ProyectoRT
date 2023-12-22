@@ -1,6 +1,6 @@
 #include "update.h"
 
-working_mode_t time_scale = TS_10S;
+working_mode_t time_scale = TS_1S;
 
 void update(RingBuffer *buffer)
 {
@@ -31,15 +31,15 @@ void mode_1(RingBuffer *buffer)
 {
     static int current_col = 0;
     float value;
-    int val;
+    uint16_t val;
 
     /*Leer 1 dato del buffer del UART*/
     while (pop_ring_buffer(buffer, &val) != -1)
     {
-        fprintf(log_file, "%d\n", val);
+        // fprintf(log_file, "%d\n", val);
         value = ((float) val / 4095.0) * 20.0; //0-20 unidad de medida
 
-        row_pass(value, current_col);
+        col_pass(value, current_col);
 
         current_col = (current_col + 1) % COLS;
     }

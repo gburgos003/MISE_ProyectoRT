@@ -60,14 +60,15 @@ void EscribirEnVentana(int fila, int columna, char valor)
     screen[(20-fila) * PRINT_COLS + columna + 9] = valor;
 }
 
-void row_pass(uint32_t value, int column)
+void col_pass(uint32_t value, int column)
 {
     // TODO
     static int valor_anterior = 0;
 
     for (int i = 0; i < 20; i++)
     {
-        if (((i > valor_anterior) && (i <= value)) || ((i < valor_anterior) && (i >= value)))
+        if (((i > valor_anterior) && (i < value)) || ((i < valor_anterior) && (i > value) || (i == value)))
+        //if(i == value)
         {
             EscribirEnVentana(i, column, '#');
             continue;
