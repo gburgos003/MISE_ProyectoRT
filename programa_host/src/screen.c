@@ -79,6 +79,35 @@ void EscribirEnVentana(int fila, int columna, char valor)
 {
     screen[((GRAPH_ROWS) - fila) * PRINT_COLS + columna + GRAPH_COL_OFFSET] = valor;
 }
+void cambiar_eje_x(working_mode_t t_s){
+    char tiempo[10];
+    switch (t_s)
+    {
+    case TS_2_5MS:
+        memcpy(tiempo,"2.5ms",6);
+        break;
+    case TS_5MS:
+        memcpy(tiempo,"  5ms",6);
+        break;
+    case TS_10MS:
+        memcpy(tiempo," 10ms",6);
+        break;
+    case TS_100MS:
+        memcpy(tiempo,"100ms",6);
+        break;
+    case TS_1S:
+        memcpy(tiempo,"   1s",6);
+        break;
+    case TS_10S:
+        memcpy(tiempo,"  10s",6);
+        break;
+    
+    default:
+        break;
+    }
+    // sprintf(tiempo,"%5d",t_s/1000000);
+    memcpy(&screen[(PRINT_ROWS - 3) * PRINT_COLS + (PRINT_COLS - 6)], tiempo, strlen(tiempo));
+}
 
 void col_pass(uint32_t value, int column)
 {

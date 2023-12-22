@@ -6,6 +6,7 @@
 
 #include "ringbuffer.h"
 #include "stdio.h"
+#include "update.h"
 
 #define clear() printf("\033[H\033[J")
 
