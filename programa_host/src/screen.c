@@ -43,14 +43,14 @@ void y_Axi_scale(float maxValue, int precision)
 {
     char text[10];
     float dato;
-    for (int i = 1; i <= precision; i+=2)
+    for (int i = 0; i < precision; i+=2)
     {
-        dato = ((float) maxValue*i / (float) precision);
+        dato = ((float) maxValue*i / (float) (precision-1));
         sprintf(text,"%1.2fV",dato);
         // for (int j=0; j < strlen(text); j++){
         //     screen[(GRAPH_ROWS -i) * PRINT_COLS + (2+j)] = text[j];
         // }
-        memcpy(&screen[i * PRINT_COLS + 2], text, strlen(text));
+        memcpy(&screen[(GRAPH_ROWS-i) * PRINT_COLS + 2], text, strlen(text));
 
     }
 }
