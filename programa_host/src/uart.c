@@ -62,7 +62,9 @@ void set_blocking(int fd, int should_block)
 
 void enviar_comando_uart(unsigned char *comando)
 {
-    write(fd_uart, comando, strlen(comando));
+    write(fd_uart, comando, 2);
+    usleep(5000);
+
 }
 
 int config_uart()
