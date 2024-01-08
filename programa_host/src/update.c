@@ -1,6 +1,7 @@
 #include "update.h"
 
 working_mode_t time_scale = TS_1S;
+int current_col = 0;
 
 void update(RingBuffer *buffer)
 {
@@ -35,9 +36,13 @@ void mode_0(RingBuffer *buffer)
     
 }
 
+void start_col(){
+    current_col = 0;
+}
+
+
 void mode_1(RingBuffer *buffer)
 {
-    static int current_col = 0;
     float value;
     uint16_t val;
 

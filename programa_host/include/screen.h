@@ -26,6 +26,7 @@ extern int refresh_rate;
 extern FILE * log_file;
 
 void clear_to_top(void);
+void clear_graph();
 void move_top_left(void);
 void print_cmd(char *);
 void print_screen(void);

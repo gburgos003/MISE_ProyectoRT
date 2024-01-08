@@ -77,6 +77,15 @@ void EscribirEnVentana(int fila, int columna, char valor)
     screen[((GRAPH_ROWS) - fila) * PRINT_COLS + columna + GRAPH_COL_OFFSET] = valor;
 }
 
+void clear_graph(){
+    for(int i = 0; i < (COLS); i++){
+        for(int j = 0; j < (GRAPH_ROWS); j++){
+            EscribirEnVentana(j,i,' ');
+        }
+    }
+}
+
+
 void col_pass(uint32_t value, int column)
 {
     // TODO

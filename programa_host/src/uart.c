@@ -26,7 +26,7 @@ int set_interface_attribs(int fd, int speed, int parity)
     tty.c_cc[VMIN] = 0;     // read doesn't block
     tty.c_cc[VTIME] = 5;    // 0.5 seconds read timeout
 
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY | INLCR | ICRNL); // shut off xon/xoff ctrl //Se añaden las opciones de INLCR/ICRNL para que el dato 0xD no se transforme en 0xA
 
     tty.c_cflag |= (CLOCAL | CREAD);   // ignore modem controls,
                                        // enable reading
@@ -81,9 +81,12 @@ int config_uart()
 
     unsigned char comando_uart_inicial[2] = {'U', 100};
     unsigned char comando_sample_time_inicial[2] = {'S', 50};
+    unsigned char comando_mode_inicial[2] = {'M', 1};
+
 
     enviar_comando_uart(comando_uart_inicial);
     enviar_comando_uart(comando_sample_time_inicial);
+    enviar_comando_uart(comando_mode_inicial);
 
     return 0;
 }

@@ -46,6 +46,7 @@
 ADC_HandleTypeDef hadc1;
 
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart2;
 
@@ -61,7 +62,7 @@ osThreadId_t taskLeerADCHandle;
 const osThreadAttr_t taskLeerADC_attributes = {
   .name = "taskLeerADC",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityRealtime,
 };
 /* Definitions for taskEnvioUART */
 osThreadId_t taskEnvioUARTHandle;
@@ -100,6 +101,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
 void StartTaskEjecutarCmd(void *argument);
 void StartTaskLeerADC(void *argument);
 void StartTaskEnvioUART(void *argument);
@@ -123,6 +125,7 @@ typedef enum {
 	INVALID = 0,
 	SET_UART_TIME,
 	SET_SAMPLE_TIME,
+	SET_MODE,
 } command_id;
 
 typedef struct command {
@@ -163,6 +166,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_ADC1_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -216,7 +220,8 @@ int main(void)
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   HAL_UART_Receive_IT(&huart2, buffer_commands, 2);
-
+  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -303,7 +308,7 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ENABLE;
+  hadc1.Init.ScanConvMode = DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -351,9 +356,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 84;
+  htim3.Init.Prescaler = 84-1;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 25;
+  htim3.Init.Period = 100;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -374,6 +379,65 @@ static void MX_TIM3_Init(void)
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 84-1;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 2500;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 1000;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+  HAL_TIM_MspPostInit(&htim4);
 
 }
 
@@ -418,6 +482,8 @@ static void MX_USART2_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -451,20 +517,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	// DECODIICAR MENSAJE RECIBIDO
+	// DECODIFICAR MENSAJE RECIBIDO
 	// TODO
 	command cmd;
 
 	if (buffer_commands[0] == 'U') {
 		cmd.type = SET_UART_TIME;
 		cmd.arg = buffer_commands[1];
-	} else if (buffer_commands[0] == 'S') {
+	} else if (buffer_commands[0] == 'T') {
 		cmd.type = SET_SAMPLE_TIME;
+		cmd.arg = buffer_commands[1];
+	}else if (buffer_commands[0] == 'M'){
+		cmd.type = SET_MODE;
 		cmd.arg = buffer_commands[1];
 	}
 
@@ -526,11 +597,6 @@ void StartTaskEjecutarCmd(void *argument)
 
 	  switch (cmd.type) {
 	  case SET_UART_TIME:
-		  if (cmd.arg == 20) {
-			  n_samples = 100;
-		  } else {
-			  n_samples = 1;
-		  }
 		  uart_time = cmd.arg;
 		  break;
 	  case SET_SAMPLE_TIME:
@@ -539,20 +605,35 @@ void StartTaskEjecutarCmd(void *argument)
 		  // status = osMutexAcquire(mutexAdcHandle, osWaitForever);
 
 		  // APAGAR TIMER
-
+		  HAL_TIM_Base_Stop_IT(&htim3);
 		  // CONFIG TIMER
+		  __HAL_TIM_SET_COUNTER(&htim3,0);
+		  __HAL_TIM_SET_AUTORELOAD(&htim3,sample_time);
 
 		  // ENCENDER TIMER
+		  HAL_TIM_Base_Start_IT(&htim3);
 
 		  // status = osMutexRelease(mutexAdcHandle);
 
+		  break;
+	  case SET_MODE:
+		  if (cmd.arg == 0){
+			  n_samples = 100;
+			  uart_time = 2000;
+		  }
+		  else if (cmd.arg == 1){
+			  n_samples = 1;
+		  }
+		  else{
+			  //TRIGGER MODE
+		  }
 		  break;
 
 	  default:
 		  break;
 	  }
 
-	  osDelay(10);
+	 osDelay(10);
   }
   /* USER CODE END 5 */
 }
@@ -574,17 +655,17 @@ void StartTaskLeerADC(void *argument)
 
 	for(;;)
 	{
-		// osEventFlagsWait(systemFlagsHandle, TIMER_FLAG, osFlagsNoClear, osWaitForever);
-		// osEventFlagsClear(systemFlagsHandle, TIMER_FLAG);
+		osEventFlagsWait(systemFlagsHandle, TIMER_FLAG, osFlagsNoClear, osWaitForever);
+		osEventFlagsClear(systemFlagsHandle, TIMER_FLAG);
 		// OBTENER MUTEX
-		status = osMutexAcquire(mutexAdcHandle, osWaitForever);
+		//status = osMutexAcquire(mutexAdcHandle, osWaitForever);
 		HAL_ADC_Start(&hadc1);
 		status = HAL_ADC_PollForConversion(&hadc1, 1);
 		if (status == HAL_OK) {
 		  dato = HAL_ADC_GetValue(&hadc1);
 		}
 		HAL_ADC_Stop(&hadc1);
-		status = osMutexRelease(mutexAdcHandle);
+		//status = osMutexRelease(mutexAdcHandle);
 
 		status = osMutexAcquire(mutexBufferHandle, osWaitForever);
 		bufferAdc[index_sample] = dato;

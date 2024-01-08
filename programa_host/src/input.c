@@ -4,6 +4,7 @@ int exit_signal = 0;
 
 unsigned char cmdU[2] = {'U', 100};
 unsigned char cmdT[2] = {'T', 50};
+unsigned char cmdM[2] = {'M', 1}; //3 modos, Modo 0 = 100 datos cada X uart time, Modo 1 = 1 datos cada X uart time, Modo 2 = Trigger rising
 
 void config_input(struct termios * old_tio, struct termios * new_tio) {
     /* get the terminal settings for stdin */
@@ -72,46 +73,58 @@ int decode_cmd(char * cmd_buffer) {
             if(strcmp(arg2, "10s") == 0) {
                 cmdU[1] = 100;
                 cmdT[1] = 50;
+                cmdM[1] = 1;
 
                 fprintf(log_file, "CMDU: %d %d\nCMDT: %d %d\n", cmdU[0], cmdU[1], cmdT[0], cmdT[1]);
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_10S;
             } else if(strcmp(arg2, "1s") == 0) {
                 cmdU[1] = 10;
                 cmdT[1] = 50;
+                cmdM[1] = 1;
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_1S;
             } else if(strcmp(arg2, "100ms") == 0) {
                 cmdU[1] = 1;
                 cmdT[1] = 50;
+                cmdM[1] = 1;
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_100MS;
             } else if(strcmp(arg2, "10ms") == 0) {
-                cmdU[1] = 20;
-                cmdT[1] = 50;
+                cmdU[1] = 255;
+                cmdT[1] = 100;
+                cmdM[1] = 0;
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_10MS;
             } else if(strcmp(arg2, "5ms") == 0) {
-                cmdU[1] = 20;
+                cmdU[1] = 255;
                 cmdT[1] = 50;
+                cmdM[1] = 0;
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_5MS;
             } else if(strcmp(arg2, "2.5ms") == 0) {
-                cmdU[1] = 20;
-                cmdT[1] = 50;
+                cmdU[1] = 255;
+                cmdT[1] = 25;
+                cmdM[1] = 0;
 
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
+                enviar_comando_uart(cmdM);
                 time_scale = TS_2_5MS;
             } else {
                 return -1;
@@ -119,6 +132,8 @@ int decode_cmd(char * cmd_buffer) {
 
             vaciar_ring_buffer(&data_buffer);
             cambiar_eje_x(time_scale);
+            clear_graph();
+            start_col();
         } else {
             return -1;
         }

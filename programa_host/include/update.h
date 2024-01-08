@@ -17,6 +17,7 @@ extern working_mode_t time_scale; // MICROSEGUNDOS
 
 void update(RingBuffer *);
 
+void start_col();
 void mode_0(RingBuffer *);
 void mode_1(RingBuffer *);
 
