@@ -47,8 +47,9 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
-#define BUFFER_FULL_FLAG 1
-#define TIMER_FLAG 2
+#define CONNECTION_STATUS_FLAG 1
+#define BUFFER_FULL_FLAG 1 << 2
+#define CAN_SEND_FLAG 1 << 3
 
 /* USER CODE END EM */
 
@@ -84,7 +85,6 @@ void Error_Handler(void);
 #define LED_G_GPIO_Port GPIOB
 #define TIM4_CH1_Pin GPIO_PIN_6
 #define TIM4_CH1_GPIO_Port GPIOB
-
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -2,6 +2,7 @@
 
 int exit_signal = 0;
 
+unsigned char cmdC[2] = {'C', 0};
 unsigned char cmdU[2] = {'U', 100};
 unsigned char cmdT[2] = {'T', 50};
 unsigned char cmdM[2] = {'M', 1}; //3 modos, Modo 0 = 100 datos cada X uart time, Modo 1 = 1 datos cada X uart time, Modo 2 = Trigger rising
@@ -65,6 +66,8 @@ int decode_cmd(char * cmd_buffer) {
     sscanf(cmd_buffer, "%s %s %s", command, arg1, arg2);
     if (strcmp(command, "exit") == 0) {
         exit_signal = 1;
+        cmdC[1] = 0;
+        enviar_comando_uart(cmdC);
         return 0;
     }
 

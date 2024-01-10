@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="osMessageQueuePut"/>
+		<item key="selection" value="STATUS"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="status"/>
+			<item value="&#x09;switch (buffer_commands[0]) {"/>
+			<item value="callback"/>
 			<item value="osMessageQueuePut"/>
 			<item value="uart_time"/>
 			<item value="&#x09;&#x09;  uart_time"/>

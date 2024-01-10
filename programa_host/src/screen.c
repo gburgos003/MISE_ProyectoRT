@@ -90,6 +90,9 @@ void col_pass(uint32_t value, int column)
 {
     // TODO
     static int valor_anterior = 0;
+    if (column == 0) {
+        valor_anterior = value;
+    }
 
     // fprintf(log_file, "%d\n", value);
 

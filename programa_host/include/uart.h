@@ -14,6 +14,7 @@
 int set_interface_attribs(int, int, int);
 void set_blocking(int, int);
 void * recieve_data(void *);
+void * comunication(void *);
 void enviar_comando_uart(unsigned char *);
 int config_uart();
 

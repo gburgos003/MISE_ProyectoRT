@@ -167,3 +167,12 @@ void *recieve_data(void *buffer)
         }
     }
 }
+
+void* comunication(void *) {
+    unsigned char comando_estado[2] = {'C', 1};
+
+    for(;;) {
+        enviar_comando_uart(comando_estado);
+        sleep(2);
+    }
+}

@@ -71,15 +71,17 @@ const osThreadAttr_t taskEnvioUART_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for taskConnectionC */
+osThreadId_t taskConnectionCHandle;
+const osThreadAttr_t taskConnectionC_attributes = {
+  .name = "taskConnectionC",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* Definitions for colaCmd */
 osMessageQueueId_t colaCmdHandle;
 const osMessageQueueAttr_t colaCmd_attributes = {
   .name = "colaCmd"
-};
-/* Definitions for mutexAdc */
-osMutexId_t mutexAdcHandle;
-const osMutexAttr_t mutexAdc_attributes = {
-  .name = "mutexAdc"
 };
 /* Definitions for mutexBuffer */
 osMutexId_t mutexBufferHandle;
@@ -105,6 +107,7 @@ static void MX_TIM4_Init(void);
 void StartTaskEjecutarCmd(void *argument);
 void StartTaskLeerADC(void *argument);
 void StartTaskEnvioUART(void *argument);
+void StartTaskConnectionCheck(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -115,6 +118,7 @@ void StartTaskEnvioUART(void *argument);
 
 uint16_t bufferAdc[1024];
 uint8_t buffer_commands[2];
+int connection_status;
 
 //int uart_time = 10;
 int uart_time = 5000;
@@ -126,6 +130,7 @@ typedef enum {
 	SET_UART_TIME,
 	SET_SAMPLE_TIME,
 	SET_MODE,
+	CONNECTION_STATUS
 } command_id;
 
 typedef struct command {
@@ -174,9 +179,6 @@ int main(void)
   /* Init scheduler */
   osKernelInitialize();
   /* Create the mutex(es) */
-  /* creation of mutexAdc */
-  mutexAdcHandle = osMutexNew(&mutexAdc_attributes);
-
   /* creation of mutexBuffer */
   mutexBufferHandle = osMutexNew(&mutexBuffer_attributes);
 
@@ -209,6 +211,9 @@ int main(void)
 
   /* creation of taskEnvioUART */
   taskEnvioUARTHandle = osThreadNew(StartTaskEnvioUART, NULL, &taskEnvioUART_attributes);
+
+  /* creation of taskConnectionC */
+  taskConnectionCHandle = osThreadNew(StartTaskConnectionCheck, NULL, &taskConnectionC_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -309,7 +314,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.ScanConvMode = DISABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
@@ -482,8 +487,6 @@ static void MX_USART2_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -517,58 +520,58 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
+	static int index_sample = 0;
+	uint16_t dato;
+
+	dato = HAL_ADC_GetValue(&hadc1);
+
+	osMutexAcquire(mutexBufferHandle, osWaitForever);
+	bufferAdc[index_sample] = dato;
+	osMutexRelease(mutexBufferHandle);
+
+	index_sample++;
+	if (index_sample == n_samples) {
+	  index_sample = 0;
+//	  HAL_ADC_Stop_IT(&hadc1);
+	  HAL_TIM_Base_Stop_IT(&htim3);
+	  osEventFlagsSet(systemFlagsHandle, BUFFER_FULL_FLAG);
+	}
+}
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	// DECODIFICAR MENSAJE RECIBIDO
 	// TODO
 	command cmd;
+	int cmd_valid = 1;
 
-	if (buffer_commands[0] == 'U') {
+	switch (buffer_commands[0]) {
+	case 'U':
 		cmd.type = SET_UART_TIME;
-		cmd.arg = buffer_commands[1];
-	} else if (buffer_commands[0] == 'T') {
+		break;
+	case 'T':
 		cmd.type = SET_SAMPLE_TIME;
-		cmd.arg = buffer_commands[1];
-	}else if (buffer_commands[0] == 'M'){
+		break;
+	case 'M':
 		cmd.type = SET_MODE;
-		cmd.arg = buffer_commands[1];
+		break;
+	case 'C':
+		cmd.type = CONNECTION_STATUS;
+		break;
+	default:
+		cmd_valid = 0;
+		break;
 	}
 
 	// METER CMD A LA COLA
-	osMessageQueuePut(colaCmdHandle, &cmd, 0, 0);
-
-//	  switch (cmd.type) {
-//	  case SET_UART_TIME:
-//		  if (cmd.arg == 20) {
-//			  n_samples = 100;
-//		  } else {
-//			  n_samples = 1;
-//		  }
-//		  uart_time = cmd.arg;
-//		  break;
-//	  case SET_SAMPLE_TIME:
-//		  sample_time = cmd.arg;
-//
-////		  status = osMutexAcquire(mutexAdcHandle, osWaitForever);
-//
-//		  // APAGAR TIMER
-//
-//		  // CONFIG TIMER
-//
-//		  // ENCENDER TIMER
-//
-////		  status = osMutexRelease(mutexAdcHandle);
-//
-//		  break;
-//
-//	  default:
-//		  break;
-//	  }
+	if (cmd_valid) {
+		cmd.arg = buffer_commands[1];
+		osMessageQueuePut(colaCmdHandle, &cmd, 0, 0);
+	}
 
 	HAL_UART_Receive_IT(&huart2, buffer_commands, sizeof(buffer_commands));
 }
@@ -602,8 +605,6 @@ void StartTaskEjecutarCmd(void *argument)
 	  case SET_SAMPLE_TIME:
 		  sample_time = cmd.arg;
 
-		  // status = osMutexAcquire(mutexAdcHandle, osWaitForever);
-
 		  // APAGAR TIMER
 		  HAL_TIM_Base_Stop_IT(&htim3);
 		  // CONFIG TIMER
@@ -612,8 +613,6 @@ void StartTaskEjecutarCmd(void *argument)
 
 		  // ENCENDER TIMER
 		  HAL_TIM_Base_Start_IT(&htim3);
-
-		  // status = osMutexRelease(mutexAdcHandle);
 
 		  break;
 	  case SET_MODE:
@@ -629,6 +628,14 @@ void StartTaskEjecutarCmd(void *argument)
 		  }
 		  break;
 
+	  case CONNECTION_STATUS:
+		  if (cmd.arg == 1) {
+			  connection_status++;
+		  } else {
+			  connection_status--;
+		  }
+		  osEventFlagsSet(systemFlagsHandle, CONNECTION_STATUS_FLAG);
+		  break;
 	  default:
 		  break;
 	  }
@@ -649,35 +656,11 @@ void StartTaskLeerADC(void *argument)
 {
   /* USER CODE BEGIN StartTaskLeerADC */
   /* Infinite loop */
-	uint16_t dato = 0;
-	osStatus_t status;
-	int index_sample = 0;
 
 	for(;;)
 	{
-		osEventFlagsWait(systemFlagsHandle, TIMER_FLAG, osFlagsNoClear, osWaitForever);
-		osEventFlagsClear(systemFlagsHandle, TIMER_FLAG);
-		// OBTENER MUTEX
-		//status = osMutexAcquire(mutexAdcHandle, osWaitForever);
-		HAL_ADC_Start(&hadc1);
-		status = HAL_ADC_PollForConversion(&hadc1, 1);
-		if (status == HAL_OK) {
-		  dato = HAL_ADC_GetValue(&hadc1);
-		}
-		HAL_ADC_Stop(&hadc1);
-		//status = osMutexRelease(mutexAdcHandle);
-
-		status = osMutexAcquire(mutexBufferHandle, osWaitForever);
-		bufferAdc[index_sample] = dato;
-		status = osMutexRelease(mutexBufferHandle);
-
-		index_sample++;
-		if (index_sample == n_samples) {
-		  osEventFlagsSet(systemFlagsHandle, BUFFER_FULL_FLAG);
-		  index_sample = 0;
-		  osDelay(uart_time);
-		}
-		// osMessageQueuePut(colaDatos1Handle, &dato, 0, osWaitForever);
+		HAL_TIM_Base_Start_IT(&htim3);
+		osDelay(uart_time);
 	}
   /* USER CODE END StartTaskLeerADC */
 }
@@ -698,14 +681,13 @@ void StartTaskEnvioUART(void *argument)
 	/* Infinite loop */
   for(;;)
   {
-	  osEventFlagsWait(systemFlagsHandle, BUFFER_FULL_FLAG, osFlagsNoClear, osWaitForever);
+	  osEventFlagsWait(systemFlagsHandle, BUFFER_FULL_FLAG | CAN_SEND_FLAG, osFlagsNoClear | osFlagsWaitAll, osWaitForever);
 	  osEventFlagsClear(systemFlagsHandle, BUFFER_FULL_FLAG);
 
 	  mensaje[0] = 0xFE;
 	  mensaje[1] = 0xFE;
 	  mensaje[n_samples * 2 + 2] = 0xFF;
 	  mensaje[n_samples * 2 + 3] = 0xFF;
-//	  mensaje[n_samples * 2 + 1] = 0xFF;
 
 	  status = osMutexAcquire(mutexBufferHandle, osWaitForever);
 	  memcpy(&mensaje[2], (uint8_t *) bufferAdc, n_samples * 2);
@@ -717,6 +699,39 @@ void StartTaskEnvioUART(void *argument)
 
   }
   /* USER CODE END StartTaskEnvioUART */
+}
+
+/* USER CODE BEGIN Header_StartTaskConnectionCheck */
+/**
+* @brief Function implementing the taskConnectionC thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTaskConnectionCheck */
+void StartTaskConnectionCheck(void *argument)
+{
+  /* USER CODE BEGIN StartTaskConnectionCheck */
+  /* Infinite loop */
+	int status_anterior = connection_status;
+  for(;;)
+  {
+	  osEventFlagsWait(systemFlagsHandle, CONNECTION_STATUS_FLAG, osFlagsWaitAny, 2100);
+	  osEventFlagsClear(systemFlagsHandle, CONNECTION_STATUS_FLAG);
+
+	  if (status_anterior < connection_status) {
+		  // LED VERDE
+		  HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_SET);
+		  osEventFlagsSet(systemFlagsHandle, CAN_SEND_FLAG);
+	  } else {
+		  // LED ROJO
+		  HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_SET);
+		  osEventFlagsClear(systemFlagsHandle, CAN_SEND_FLAG);
+	  }
+	  status_anterior = connection_status;
+  }
+  /* USER CODE END StartTaskConnectionCheck */
 }
 
 /**

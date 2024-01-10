@@ -30,9 +30,11 @@ int main()
     
     pthread_t handle_input;
     pthread_t handle_data_stream;
+    pthread_t handle_comunication;
 
     result = pthread_create(&handle_input, NULL, get_input, NULL);
     result = pthread_create(&handle_data_stream, NULL, recieve_data, (void *) &data_buffer);
+    result = pthread_create(&handle_comunication, NULL, comunication, NULL);
 
     gettimeofday(&t1, NULL);
     cambiar_eje_y(3.33,GRAPH_ROWS);
@@ -41,9 +43,6 @@ int main()
         if (exit_signal) {
             break;
         }
-
-        
-
 
         gettimeofday(&t2, NULL);
         elapsed = ((t2.tv_sec - t1.tv_sec) * 1000000) + (t2.tv_usec - t1.tv_usec);
