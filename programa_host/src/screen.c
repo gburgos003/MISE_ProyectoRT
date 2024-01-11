@@ -27,12 +27,12 @@ char screen[PRINT_COLS * PRINT_ROWS + 1] = "\
 *-------*----------------------------------------------------------------------------------------------------*\
 | Time  |^                                                                                                  ^|\
 | Scale |0s                                                                                               10s|\
-*-------*----------------------------------------------------------------------------------------------------*\
-| >>                                                                                                         |\
-*------------------------------------------------------------------------------------------------------------*";
+*-------*-------------------------------------------*--------------------------------------------------------*\
+| >>                                                |                                                        |\
+*---------------------------------------------------*--------------------------------------------------------*";
 
 char screen_input_line[PRINT_COLS + 1] = "\
-| >>                                                                                                         |";
+| >>                                                |                                                        |";
 
 // int refresh_rate = 1000; // MICROSEGUNDOS
 
@@ -63,7 +63,33 @@ void move_top_left(void)
 void print_cmd(char *cmd_buffer)
 {
     memcpy(&screen[PRINT_COLS * CMD_ROW], screen_input_line, strlen(screen_input_line));
-    memcpy(&screen[PRINT_COLS * CMD_ROW + 5], cmd_buffer, strlen(cmd_buffer));
+    memcpy(&screen[PRINT_COLS * CMD_ROW + CMD_COL], cmd_buffer, strlen(cmd_buffer));
+}
+
+void print_cmd_status(int status) {
+    char status_msg[40]; 
+    switch (status)
+    {
+    case 0:
+        strcpy(status_msg, "OK!");
+        break;
+    case -1:
+        strcpy(status_msg, "Comando erroneo!");
+        break;
+    case -2:
+        strcpy(status_msg, "Argumento invalido!");
+        break;
+    case -3:
+        strcpy(status_msg, "Valor invalido!");
+        break;
+    case 1:
+        strcpy(status_msg, "");
+    default:
+        break;
+    }
+
+    memset(&screen_input_line[CMD_STATUS_COL], ' ', sizeof(status_msg));
+    memcpy(&screen_input_line[CMD_STATUS_COL], status_msg, strlen(status_msg));
 }
 
 void print_screen(void)

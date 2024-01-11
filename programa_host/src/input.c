@@ -25,29 +25,57 @@ void config_input(struct termios * old_tio, struct termios * new_tio) {
 
 void * get_input(void *) {
     char c;
-    char cmd[100];
+    char cmd[CMD_LENGTH];
     int index;
+
+    char cmd_historal[100][CMD_LENGTH];
+    int index_historial = 0;
+    int index_usuario = 0;
 
     while(!exit_signal) {
         c = getchar();
 
-        // fprintf(log_file, "%c\n", c);
-
         if (c == '\n') {
             int cmd_status = decode_cmd(cmd);
-            // TODO Hacer algo con este status
+
+            print_cmd_status(cmd_status);
+            if (cmd_status != 1) {
+                strcpy(cmd_historal[index_historial], cmd);
+                index_historial++;
+                index_usuario = index_historial;
+            }
 
             clear_cmd_str(cmd);
             index = 0;
-        } else if (c == 127 || c == 8) {
+        } else if (c == 127) {
             if (index > 0) {
                 index--;
             }
             cmd[index] = 0;
         } else if (isalnum(c) || isspace(c) || c == '.') {
-            cmd[index] = c;
-            if (index < sizeof(cmd)) {
+            if (index < CMD_LENGTH) {
                 index++;
+            }
+            cmd[index-1] = c;
+        } else if (c = '\033') {
+            getchar();
+            char arrow = getchar();
+            switch (arrow)
+            {
+            case 'A':
+                if (index_usuario > 0) {
+                    index_usuario--;
+                    strcpy(cmd,cmd_historal[index_usuario]);
+                }
+                break;
+            case 'B':
+                if (index_usuario < index_historial) {
+                    index_usuario++;
+                    strcpy(cmd,cmd_historal[index_usuario]);
+                }
+                break;
+            default:
+                break;
             }
         }
 
@@ -56,13 +84,28 @@ void * get_input(void *) {
 }
 
 void clear_cmd_str(char * cmd_buffer) {
-    memset(cmd_buffer, '\0', 100);
+    memset(cmd_buffer, '\0', CMD_LENGTH);
+}
+
+void enviar_comando_timescale(char uart_time, char timescale, char mode, working_mode_t working_mode) {
+    cmdU[1] = uart_time;
+    cmdT[1] = time_scale;
+    cmdM[1] = mode;
+
+    enviar_comando_uart(cmdU);
+    enviar_comando_uart(cmdT);
+    enviar_comando_uart(cmdM);
+    time_scale = working_mode;
 }
 
 int decode_cmd(char * cmd_buffer) {
-    char command[10] = {0};
-    char arg1[10] = {0};
-    char arg2[10] = {0};
+    char command[CMD_LENGTH] = {0};
+    char arg1[CMD_LENGTH] = {0};
+    char arg2[CMD_LENGTH] = {0};
+
+    if (strlen(cmd_buffer) == 0) {
+        return 1;
+    }
 
     // char * command = strtok(cmd_buffer, " ");
     sscanf(cmd_buffer, "%s %s %s", command, arg1, arg2);
@@ -70,67 +113,23 @@ int decode_cmd(char * cmd_buffer) {
         exit_signal = 1;
         cmdC[1] = 0;
         enviar_comando_uart(cmdC);
-        return 0;
-    }
 
-    if (strcmp(command, "timescale") == 0) {
+    } else if (strcmp(command, "timescale") == 0) {
         if (strcmp(arg1, "set") == 0) {
             if(strcmp(arg2, "10s") == 0) {
-                cmdU[1] = 100;
-                cmdT[1] = 50;
-                cmdM[1] = 1;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_10S;
+                enviar_comando_timescale(100, 50, 1, TS_10S);
             } else if(strcmp(arg2, "1s") == 0) {
-                cmdU[1] = 10;
-                cmdT[1] = 50;
-                cmdM[1] = 1;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_1S;
+                enviar_comando_timescale(10, 50, 1, TS_1S);
             } else if(strcmp(arg2, "100ms") == 0) {
-                cmdU[1] = 1;
-                cmdT[1] = 50;
-                cmdM[1] = 1;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_100MS;
+                enviar_comando_timescale(1, 50, 1, TS_100MS);
             } else if(strcmp(arg2, "10ms") == 0) {
-                cmdU[1] = 255;
-                cmdT[1] = 100;
-                cmdM[1] = 0;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_10MS;
+                enviar_comando_timescale(255, 100, 0, TS_10MS);
             } else if(strcmp(arg2, "5ms") == 0) {
-                cmdU[1] = 255;
-                cmdT[1] = 50;
-                cmdM[1] = 0;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_5MS;
+                enviar_comando_timescale(255, 50, 0, TS_5MS);
             } else if(strcmp(arg2, "2.5ms") == 0) {
-                cmdU[1] = 255;
-                cmdT[1] = 25;
-                cmdM[1] = 0;
-
-                enviar_comando_uart(cmdU);
-                enviar_comando_uart(cmdT);
-                enviar_comando_uart(cmdM);
-                time_scale = TS_2_5MS;
+                enviar_comando_timescale(255, 25, 0, TS_2_5MS);
             } else {
-                return -1;
+                return -3;
             }
 
             vaciar_ring_buffer(&data_buffer);
@@ -138,36 +137,37 @@ int decode_cmd(char * cmd_buffer) {
             clear_graph();
             start_col();
             fprintf(log_file, "User Command = %s %s %s, UartTime: %dms, SampleTime: %dus, Mode: %d\n", command, arg1, arg2, cmdU[1], cmdT[1], cmdM[1]);
-            fflush(log_file);
         } else {
-            return -1;
+            return -2;
         }
 
     } else if (strcmp(command, "test") == 0) {
         if (strcmp(arg1, "duty") == 0) {
-
             int duty = atoi(arg2);
-            if (duty && duty <= 100){
-                cmdD[1] = atoi(arg2);
+            if ((duty > 0) && (duty <= 100)){
+                cmdD[1] = duty;
                 enviar_comando_uart(cmdD);
-            } 
-            fprintf(log_file, "User Command = %s %s %s, Duty: %d%%\n", command, arg1, arg2, cmdD[1]);
-            fflush(log_file);
-   
+                fprintf(log_file, "User Command = %s %s %s, Duty: %d%%\n", command, arg1, arg2, cmdD[1]);
+            } else {
+                return -3;
+            }
         }
         else if(strcmp(arg1, "period") == 0){
             int period = atoi(arg2);
             if ((period > 0) && (period < 256)){
-                cmdP[1] = atoi(arg2);
+                cmdP[1] = period;
                 enviar_comando_uart(cmdP);
+                fprintf(log_file, "User Command = %s %s %s, Period:%dus\n", command, arg1, arg2, cmdP[1]);
+            } else {
+                return -3;
             }
-            fprintf(log_file, "User Command = %s %s %s, Period:%dus\n", command, arg1, arg2, cmdP[1]);
-            fflush(log_file);
+        } else {
+            return -2;
         }
-
-
+    } else {
+        return -1;
     }
 
-
-    return -1;
+    fflush(log_file);
+    return 0;
 }

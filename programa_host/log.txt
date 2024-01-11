@@ -1,5 +1,0 @@
-User Command = timescale set 10ms, UartTime: 255ms, SampleTime: 100us, Mode: 0
-User Command = test period 5, Period:5us
-User Command = test period 10, Period:10us
-User Command = timescale set 2.5ms, UartTime: 255ms, SampleTime: 25us, Mode: 0
-User Command = test period 5, Period:5us
