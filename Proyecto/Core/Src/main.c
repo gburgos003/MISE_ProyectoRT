@@ -539,15 +539,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
 	index_sample++;
 	if (index_sample == n_samples) {
 	  index_sample = 0;
-//	  HAL_ADC_Stop_IT(&hadc1);
-	  HAL_TIM_Base_Stop_IT(&htim3);
+	  HAL_TIM_Base_Stop_IT(&htim3); //Parar el muestreo
 	  osEventFlagsSet(systemFlagsHandle, BUFFER_FULL_FLAG);
 	}
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	// DECODIFICAR MENSAJE RECIBIDO
-	// TODO
 	command cmd;
 	int cmd_valid = 1;
 
@@ -596,8 +594,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 /* USER CODE END Header_StartTaskEjecutarCmd */
 void StartTaskEjecutarCmd(void *argument)
 {
-  /* USER CODE BEGIN 5 */
-	osStatus_t status;
+	/* USER CODE BEGIN 5 */
 	command cmd;
 	// CALCULAR DUTY INICIAL
 	int duty = __HAL_TIM_GET_COMPARE(&htim4,TIM_CHANNEL_1)*100/__HAL_TIM_GET_AUTORELOAD(&htim4);
@@ -628,13 +625,9 @@ void StartTaskEjecutarCmd(void *argument)
 	  case SET_MODE:
 		  if (cmd.arg == 0){
 			  n_samples = 100;
-			  //uart_time = 2000;
 		  }
 		  else if (cmd.arg == 1){
 			  n_samples = 1;
-		  }
-		  else{
-			  //TRIGGER MODE
 		  }
 		  break;
 
@@ -693,7 +686,7 @@ void StartTaskLeerADC(void *argument)
 
 	for(;;)
 	{
-		HAL_TIM_Base_Start_IT(&htim3);
+		HAL_TIM_Base_Start_IT(&htim3); // Comenzar reloj de muestreo, activa el ADC
 		osDelay(uart_time);
 	}
   /* USER CODE END StartTaskLeerADC */
@@ -710,8 +703,6 @@ void StartTaskEnvioUART(void *argument)
 {
   /* USER CODE BEGIN StartTaskEnvioUART */
 	char mensaje[202];
-	osStatus_t status;
-
 	/* Infinite loop */
   for(;;)
   {
@@ -723,14 +714,11 @@ void StartTaskEnvioUART(void *argument)
 	  mensaje[n_samples * 2 + 2] = 0xFF;
 	  mensaje[n_samples * 2 + 3] = 0xFF;
 
-	  status = osMutexAcquire(mutexBufferHandle, osWaitForever);
+	  osMutexAcquire(mutexBufferHandle, osWaitForever);
 	  memcpy(&mensaje[2], (uint8_t *) bufferAdc, n_samples * 2);
-	  status = osMutexRelease(mutexBufferHandle);
+	  osMutexRelease(mutexBufferHandle);
 
 	  HAL_UART_Transmit(&huart2, (uint8_t *) mensaje, n_samples * 2 + 4, osWaitForever);
-
-	  osDelay(1);
-
   }
   /* USER CODE END StartTaskEnvioUART */
 }
