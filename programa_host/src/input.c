@@ -6,6 +6,8 @@ unsigned char cmdC[2] = {'C', 0};
 unsigned char cmdU[2] = {'U', 100};
 unsigned char cmdT[2] = {'T', 50};
 unsigned char cmdM[2] = {'M', 1}; //3 modos, Modo 0 = 100 datos cada X uart time, Modo 1 = 1 datos cada X uart time, Modo 2 = Trigger rising
+unsigned char cmdP[2] = {'P', 0}; // Unidad de tiempo usegundo por 10
+unsigned char cmdD[2] = {'D', 0}; // Rango de 0-100 en %
 
 void config_input(struct termios * old_tio, struct termios * new_tio) {
     /* get the terminal settings for stdin */
@@ -78,8 +80,6 @@ int decode_cmd(char * cmd_buffer) {
                 cmdT[1] = 50;
                 cmdM[1] = 1;
 
-                fprintf(log_file, "CMDU: %d %d\nCMDT: %d %d\n", cmdU[0], cmdU[1], cmdT[0], cmdT[1]);
-
                 enviar_comando_uart(cmdU);
                 enviar_comando_uart(cmdT);
                 enviar_comando_uart(cmdM);
@@ -137,9 +137,35 @@ int decode_cmd(char * cmd_buffer) {
             cambiar_eje_x(time_scale);
             clear_graph();
             start_col();
+            fprintf(log_file, "User Command = %s %s %s, UartTime: %dms, SampleTime: %dus, Mode: %d\n", command, arg1, arg2, cmdU[1], cmdT[1], cmdM[1]);
+            fflush(log_file);
         } else {
             return -1;
         }
+
+    } else if (strcmp(command, "test") == 0) {
+        if (strcmp(arg1, "duty") == 0) {
+
+            int duty = atoi(arg2);
+            if (duty && duty <= 100){
+                cmdD[1] = atoi(arg2);
+                enviar_comando_uart(cmdD);
+            } 
+            fprintf(log_file, "User Command = %s %s %s, Duty: %d%%\n", command, arg1, arg2, cmdD[1]);
+            fflush(log_file);
+   
+        }
+        else if(strcmp(arg1, "period") == 0){
+            int period = atoi(arg2);
+            if ((period > 0) && (period < 256)){
+                cmdP[1] = atoi(arg2);
+                enviar_comando_uart(cmdP);
+            }
+            fprintf(log_file, "User Command = %s %s %s, Period:%dus\n", command, arg1, arg2, cmdP[1]);
+            fflush(log_file);
+        }
+
+
     }
 
 

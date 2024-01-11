@@ -130,7 +130,9 @@ typedef enum {
 	SET_UART_TIME,
 	SET_SAMPLE_TIME,
 	SET_MODE,
-	CONNECTION_STATUS
+	CONNECTION_STATUS,
+	PERIOD_TEST_SIGNAL,
+	DUTY_TEST_SIGNAL
 } command_id;
 
 typedef struct command {
@@ -407,9 +409,9 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 84-1;
+  htim4.Init.Prescaler = 840-1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 2500;
+  htim4.Init.Period = 250;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
@@ -432,7 +434,7 @@ static void MX_TIM4_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 1000;
+  sConfigOC.Pulse = 100;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -562,6 +564,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	case 'C':
 		cmd.type = CONNECTION_STATUS;
 		break;
+	case 'P':
+		cmd.type = PERIOD_TEST_SIGNAL;
+		break;
+	case 'D':
+		cmd.type = DUTY_TEST_SIGNAL;
+		break;
 	default:
 		cmd_valid = 0;
 		break;
@@ -591,6 +599,8 @@ void StartTaskEjecutarCmd(void *argument)
   /* USER CODE BEGIN 5 */
 	osStatus_t status;
 	command cmd;
+	// CALCULAR DUTY INICIAL
+	int duty = __HAL_TIM_GET_COMPARE(&htim4,TIM_CHANNEL_1)*100/__HAL_TIM_GET_AUTORELOAD(&htim4);
 
   /* Infinite loop */
   for(;;)
@@ -618,7 +628,7 @@ void StartTaskEjecutarCmd(void *argument)
 	  case SET_MODE:
 		  if (cmd.arg == 0){
 			  n_samples = 100;
-			  uart_time = 2000;
+			  //uart_time = 2000;
 		  }
 		  else if (cmd.arg == 1){
 			  n_samples = 1;
@@ -635,6 +645,30 @@ void StartTaskEjecutarCmd(void *argument)
 			  connection_status--;
 		  }
 		  osEventFlagsSet(systemFlagsHandle, CONNECTION_STATUS_FLAG);
+		  break;
+	  case PERIOD_TEST_SIGNAL:
+		  // APAGAR SEÑAL
+		  HAL_TIM_PWM_Stop(&htim4,TIM_CHANNEL_1);
+		  // CONFIG TIMER
+		  __HAL_TIM_SET_COUNTER(&htim4,0);
+		  // CAMBIAR PERIODO
+		  __HAL_TIM_SET_AUTORELOAD(&htim4,cmd.arg*10);
+		  __HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,cmd.arg*10*duty/100);
+		  // ENCENDER SEÑAL
+		  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
+		  break;
+	  case DUTY_TEST_SIGNAL:
+		  // APAGAR SEÑAL
+		  HAL_TIM_PWM_Stop(&htim4,TIM_CHANNEL_1);
+		  // CONFIG TIMER
+		  __HAL_TIM_SET_COUNTER(&htim4,0);
+		  // OBTENER PERIODO
+		  int period = __HAL_TIM_GET_AUTORELOAD(&htim4);
+		  // CAMBIAR DUTY
+		  duty = cmd.arg;
+		  __HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,period*duty/100);
+		  // ENCENDER SEÑAL
+		  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
 		  break;
 	  default:
 		  break;

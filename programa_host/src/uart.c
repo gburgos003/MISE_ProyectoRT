@@ -94,16 +94,16 @@ int config_uart()
 void insertar_buffer(RingBuffer * buffer, unsigned char * data_buffer, int index) {
     uint16_t * data_buffer_ptr = (uint16_t *) data_buffer;
     
-    fprintf(log_file, "PALABRA: ");
+    //fprintf(log_file, "PALABRA: ");
 
     for (int i = 0; i < index / sizeof(uint16_t); i++) {
         push_ring_buffer(buffer, data_buffer_ptr[i] % 4096);
 
-        fprintf(log_file, "%x", data_buffer_ptr[i]);
+        //fprintf(log_file, "%x", data_buffer_ptr[i]);
     }
-    fprintf(log_file, "\n");
+    //fprintf(log_file, "\n");
 
-    fflush(log_file);
+    //fflush(log_file);
 }
 
 void *recieve_data(void *buffer)
@@ -130,7 +130,7 @@ void *recieve_data(void *buffer)
         {
             c = buf_tmp[i];
 
-            fprintf(log_file, "BYTE: %x\n", c);
+            //fprintf(log_file, "BYTE: %x\n", c);
 
             switch (estado) {
                 case INIT:
