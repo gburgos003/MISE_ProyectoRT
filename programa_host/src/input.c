@@ -25,8 +25,6 @@ void config_input(struct termios * old_tio, struct termios * new_tio) {
 
 void * get_input(void *) {
     char c;
-    char cmd[CMD_LENGTH];
-    int cursor;
 
     char cmd_historal[CMD_HISTORY_LENGTH][CMD_LENGTH];
     int index_historial = 0;
@@ -51,18 +49,29 @@ void * get_input(void *) {
             if (cursor > 0) {
                 cursor--;
             }
-            cmd[cursor] = 0;
+
+            if (cursor < strlen(cmd)) {
+                memcpy(&cmd[cursor], &cmd[cursor + 1], CMD_LENGTH - cursor);
+            } else {
+                cmd[cursor] = 0;
+            }
 
         } else if (isalnum(c) || isspace(c) || c == '.') {
             if (cursor < CMD_LENGTH) {
                 cursor++;
             }
 
-            fprintf(log_file, "%d, %d\n", cursor, strlen(&cmd[cursor - 1]));
-            fflush(log_file);
-
-            if (cursor <= strlen(cmd)) {
-                memcpy(&cmd[cursor], &cmd[cursor - 1], strlen(&cmd[cursor - 1]));
+            if (cursor < strlen(cmd)) {
+                int to_copy = 0;
+                int length_from_cursor = strlen(&cmd[cursor - 1]);
+                
+                if ((length_from_cursor + cursor) > CMD_LENGTH) {
+                    to_copy = CMD_LENGTH - cursor;
+                } else {
+                    to_copy = length_from_cursor;
+                }
+                
+                memcpy(&cmd[cursor], &cmd[cursor - 1], to_copy);
             }
 
             cmd[cursor-1] = c;
@@ -87,7 +96,7 @@ void * get_input(void *) {
                 }
                 break;
             case 'C':
-                if ((cursor < CMD_LENGTH) && (cursor <= strlen(cmd))) {
+                if ((cursor < CMD_LENGTH) && (cursor < strlen(cmd))) {
                     cursor++;
                 }
                 break;
@@ -100,8 +109,6 @@ void * get_input(void *) {
                 break;
             }
         }
-
-        print_cmd(cmd);
     }
 }
 

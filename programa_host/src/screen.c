@@ -33,6 +33,10 @@ char screen[PRINT_COLS * PRINT_ROWS + 1] = "\
 
 char screen_input_line[PRINT_COLS + 1] = "\
 | >>                                                |                                                        |";
+char cmd_status_buffer[100] = {0};
+char cmd[CMD_LENGTH] = {0};
+clock_t time_val = {0};
+int cursor = 0;
 
 // int refresh_rate = 1000; // MICROSEGUNDOS
 
@@ -60,10 +64,16 @@ void move_top_left(void)
     printf("\033[0;0H");
 }
 
-void print_cmd(char *cmd_buffer)
+void print_cmd(char *cmd_buffer, int cursor)
 {
     memcpy(&screen[PRINT_COLS * CMD_ROW], screen_input_line, strlen(screen_input_line));
     memcpy(&screen[PRINT_COLS * CMD_ROW + CMD_COL], cmd_buffer, strlen(cmd_buffer));
+    memcpy(&screen[PRINT_COLS * CMD_ROW + CMD_STATUS_COL], cmd_status_buffer, strlen(cmd_status_buffer));
+    if ((time_val / (CLOCKS_PER_SEC / 4)) % 2 == 0) {
+        screen[PRINT_COLS * CMD_ROW + CMD_COL + cursor] = '_';
+    }
+
+    time_val = clock();
 }
 
 void print_cmd_status(int status) {
@@ -88,12 +98,16 @@ void print_cmd_status(int status) {
         break;
     }
 
-    memset(&screen_input_line[CMD_STATUS_COL], ' ', sizeof(status_msg));
-    memcpy(&screen_input_line[CMD_STATUS_COL], status_msg, strlen(status_msg));
+    // memset(&screen_input_line[CMD_STATUS_COL], ' ', sizeof(status_msg));
+    // memcpy(&screen_input_line[CMD_STATUS_COL], status_msg, strlen(status_msg));
+
+    strcpy(cmd_status_buffer, status_msg);
 }
 
 void print_screen(void)
 {
+    print_cmd(cmd, cursor);
+
     printf("%s", screen);
     fflush(stdout);
 }
@@ -120,12 +134,9 @@ void col_pass(uint32_t value, int column)
         valor_anterior = value;
     }
 
-    // fprintf(log_file, "%d\n", value);
-
     for (int i = 0; i < GRAPH_ROWS; i++)
     {
         if (((i > valor_anterior) && (i < value)) || ((i < valor_anterior) && (i > value) || (i == value)))
-        //if(i == value)
         {
             EscribirEnVentana(i, column, '#');
             continue;
