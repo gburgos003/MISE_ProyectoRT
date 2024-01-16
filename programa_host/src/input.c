@@ -26,9 +26,9 @@ void config_input(struct termios * old_tio, struct termios * new_tio) {
 void * get_input(void *) {
     char c;
     char cmd[CMD_LENGTH];
-    int index;
+    int cursor;
 
-    char cmd_historal[100][CMD_LENGTH];
+    char cmd_historal[CMD_HISTORY_LENGTH][CMD_LENGTH];
     int index_historial = 0;
     int index_usuario = 0;
 
@@ -41,22 +41,32 @@ void * get_input(void *) {
             print_cmd_status(cmd_status);
             if (cmd_status != 1) {
                 strcpy(cmd_historal[index_historial], cmd);
-                index_historial++;
+                index_historial = (index_historial + 1) % CMD_HISTORY_LENGTH;
                 index_usuario = index_historial;
             }
 
             clear_cmd_str(cmd);
-            index = 0;
+            cursor = 0;
         } else if (c == 127) {
-            if (index > 0) {
-                index--;
+            if (cursor > 0) {
+                cursor--;
             }
-            cmd[index] = 0;
+            cmd[cursor] = 0;
+
         } else if (isalnum(c) || isspace(c) || c == '.') {
-            if (index < CMD_LENGTH) {
-                index++;
+            if (cursor < CMD_LENGTH) {
+                cursor++;
             }
-            cmd[index-1] = c;
+
+            fprintf(log_file, "%d, %d\n", cursor, strlen(&cmd[cursor - 1]));
+            fflush(log_file);
+
+            if (cursor <= strlen(cmd)) {
+                memcpy(&cmd[cursor], &cmd[cursor - 1], strlen(&cmd[cursor - 1]));
+            }
+
+            cmd[cursor-1] = c;
+
         } else if (c = '\033') {
             getchar();
             char arrow = getchar();
@@ -65,13 +75,25 @@ void * get_input(void *) {
             case 'A':
                 if (index_usuario > 0) {
                     index_usuario--;
-                    strcpy(cmd,cmd_historal[index_usuario]);
+                    memcpy(cmd,cmd_historal[index_usuario], CMD_LENGTH);
+                    cursor = strlen(cmd);
                 }
                 break;
             case 'B':
                 if (index_usuario < index_historial) {
                     index_usuario++;
-                    strcpy(cmd,cmd_historal[index_usuario]);
+                    memcpy(cmd,cmd_historal[index_usuario], CMD_LENGTH);
+                    cursor = strlen(cmd);
+                }
+                break;
+            case 'C':
+                if ((cursor < CMD_LENGTH) && (cursor <= strlen(cmd))) {
+                    cursor++;
+                }
+                break;
+            case 'D':
+                if (cursor > 0) {
+                    cursor--;
                 }
                 break;
             default:

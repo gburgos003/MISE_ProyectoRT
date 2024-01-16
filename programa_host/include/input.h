@@ -7,6 +7,7 @@
 #include "uart.h"
 
 #define CMD_LENGTH 41
+#define CMD_HISTORY_LENGTH 100
 
 extern unsigned char cmdU[2];
 extern unsigned char cmdT[2];
