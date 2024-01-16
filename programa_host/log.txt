@@ -1,20 +1,96 @@
-1, 0
-2, 1
-3, 1
-4, 1
-5, 1
-6, 1
-3, 5
-4, 5
-1, 0
-2, 1
-3, 1
-4, 1
-1, 0
-2, 1
-3, 1
-4, 1
-1, 0
-2, 1
-3, 1
-4, 1
+a_,1
+as_,2
+asd_,3
+asda_,4
+asdas_,5
+asdasd_,6
+asdasda_,7
+asdasdas_,8
+asdasdasd_,9
+asdasdasda_,10
+asdasdasdas_,11
+asdasdasdasd_,12
+asdasdasdasda_,13
+asdasdasdasdas_,14
+asdasdasdasdasd_,15
+asdasdasdasdasds_,16
+asdasdasdasdasdsa_,17
+asdasdasdasdasdsad_,18
+asdasdasdasdasdsada_,19
+asdasdasdasdasdsadas_,20
+asdasdasdasdasdsadasd_,21
+asdasdasdasdasdsadasda_,22
+asdasdasdasdasdsadasdas_,23
+asdasdasdasdasdsadasdasd_,24
+asdasdasdasdasdsadasdasda_,25
+asdasdasdasdasdsadasdasdas_,26
+asdasdasdasdasdsadasdasdasd_,27
+asdasdasdasdasdsadasdasdasds_,28
+asdasdasdasdasdsadasdasdasdsa_,29
+asdasdasdasdasdsadasdasdasdsad_,30
+asdasdasdasdasdsadasdasdasdsada_,31
+asdasdasdasdasdsadasdasdasdsadas_,32
+asdasdasdasdasdsadasdasdasdsadasd_,33
+asdasdasdasdasdsadasdasdasdsadasds_,34
+asdasdasdasdasdsadasdasdasdsadasdsa_,35
+asdasdasdasdasdsadasdasdasdsadasdsad_,36
+asdasdasdasdasdsadasdasdasdsadasdsada_,37
+asdasdasdasdasdsadasdasdasdsadasdsadas_,38
+asdasdasdasdasdsadasdasdasdsadasdsadasd_,39
+asdasdasdasdasdsadasdasdasdsadasdsadasda_,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdas_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdas_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdas_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdas_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+asdasdasdasdasdsadasdasdasdsadasdsadasdad_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdaa_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasdas_,41
+asdasdasdasdasdsadasdasdasdsadasdsadasda__,40
+_,0

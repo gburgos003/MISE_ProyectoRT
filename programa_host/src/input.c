@@ -26,6 +26,7 @@ void config_input(struct termios * old_tio, struct termios * new_tio) {
 void * get_input(void *) {
     char c;
     char cmd[CMD_LENGTH];
+    char cmd_mostrar[CMD_LENGTH];
     int cursor;
 
     char cmd_historal[CMD_HISTORY_LENGTH][CMD_LENGTH];
@@ -45,26 +46,36 @@ void * get_input(void *) {
                 index_usuario = index_historial;
             }
 
+            clear_cmd_str(cmd_mostrar);
             clear_cmd_str(cmd);
             cursor = 0;
+            
         } else if (c == 127) {
             if (cursor > 0) {
                 cursor--;
             }
-            cmd[cursor] = 0;
+            
+            if (cursor < strlen(cmd)){
+                memcpy(&cmd[cursor],&cmd[cursor+1],CMD_LENGTH - cursor); 
+            }
+            else{
+                cmd[cursor] = 0;
+            }
 
         } else if (isalnum(c) || isspace(c) || c == '.') {
             if (cursor < CMD_LENGTH) {
                 cursor++;
             }
-
-            fprintf(log_file, "%d, %d\n", cursor, strlen(&cmd[cursor - 1]));
-            fflush(log_file);
-
-            if (cursor <= strlen(cmd)) {
-                memcpy(&cmd[cursor], &cmd[cursor - 1], strlen(&cmd[cursor - 1]));
+            if (cursor < strlen(cmd)){
+                int longitud_mover = strlen(&cmd[cursor-1]);
+                if ((longitud_mover + cursor) > CMD_LENGTH)
+                {
+                    memcpy(&cmd[cursor],&cmd[cursor-1],CMD_LENGTH-cursor);    
+                }
+                else {
+                    memcpy(&cmd[cursor],&cmd[cursor-1],longitud_mover);
+                }    
             }
-
             cmd[cursor-1] = c;
 
         } else if (c = '\033') {
@@ -87,7 +98,7 @@ void * get_input(void *) {
                 }
                 break;
             case 'C':
-                if ((cursor < CMD_LENGTH) && (cursor <= strlen(cmd))) {
+                if ((cursor < CMD_LENGTH) && (cursor < strlen(cmd))) {
                     cursor++;
                 }
                 break;
@@ -101,7 +112,20 @@ void * get_input(void *) {
             }
         }
 
-        print_cmd(cmd);
+        clear_cmd_str(cmd_mostrar);
+        memcpy(cmd_mostrar,cmd, cursor);
+
+        memcpy(&cmd_mostrar[cursor+1],&cmd[cursor],strlen(&cmd[cursor]));
+        
+
+        cmd_mostrar[cursor] = '_';
+        fprintf(log_file, "%s,%d\n",cmd_mostrar,cursor);
+        fflush(log_file);
+
+        
+
+
+        print_cmd(cmd_mostrar);
     }
 }
 

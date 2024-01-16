@@ -23,9 +23,6 @@ int main()
 
     config_input(&old_tio, &new_tio);
     if (config_uart() == -1) {
-        tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
-        fprintf(stderr, "ERROR ABRIENDO UART\n");
-        exit(1);
     }
     
     pthread_t handle_input;
