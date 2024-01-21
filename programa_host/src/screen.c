@@ -38,11 +38,8 @@ char cmd[CMD_LENGTH] = {0};
 clock_t time_val = {0};
 int cursor = 0;
 
-// int refresh_rate = 1000; // MICROSEGUNDOS
-
 void clear_to_top(void)
 {
-    // clear();
     move_top_left();
 }
 
@@ -98,9 +95,6 @@ void print_cmd_status(int status) {
         break;
     }
 
-    // memset(&screen_input_line[CMD_STATUS_COL], ' ', sizeof(status_msg));
-    // memcpy(&screen_input_line[CMD_STATUS_COL], status_msg, strlen(status_msg));
-
     strcpy(cmd_status_buffer, status_msg);
 }
 
@@ -128,7 +122,6 @@ void clear_graph(){
 
 void col_pass(uint32_t value, int column)
 {
-    // TODO
     static int valor_anterior = 0;
     if (column == 0) {
         valor_anterior = value;

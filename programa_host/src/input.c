@@ -136,7 +136,6 @@ int decode_cmd(char * cmd_buffer) {
         return 1;
     }
 
-    // char * command = strtok(cmd_buffer, " ");
     sscanf(cmd_buffer, "%s %s %s", command, arg1, arg2);
     if (strcmp(command, "exit") == 0) {
         exit_signal = 1;
