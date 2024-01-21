@@ -94,21 +94,13 @@ int config_uart()
 void insertar_buffer(RingBuffer * buffer, unsigned char * data_buffer, int index) {
     uint16_t * data_buffer_ptr = (uint16_t *) data_buffer;
     
-    //fprintf(log_file, "PALABRA: ");
-
     for (int i = 0; i < index / sizeof(uint16_t); i++) {
         push_ring_buffer(buffer, data_buffer_ptr[i] % 4096);
-
-        //fprintf(log_file, "%x", data_buffer_ptr[i]);
     }
-    //fprintf(log_file, "\n");
-
-    //fflush(log_file);
 }
 
 void *recieve_data(void *buffer)
 {
-    // TODO
     buffer = (RingBuffer *)buffer;
 
     int num, index, data_ready;
@@ -129,8 +121,6 @@ void *recieve_data(void *buffer)
         for (int i = 0; i < num; i++)
         {
             c = buf_tmp[i];
-
-            //fprintf(log_file, "BYTE: %x\n", c);
 
             switch (estado) {
                 case INIT:
@@ -163,6 +153,9 @@ void *recieve_data(void *buffer)
                         buf[index] = c;
                         index++;
                     }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -172,6 +165,11 @@ void* comunication(void *) {
     unsigned char comando_estado[2] = {'C', 1};
 
     for(;;) {
+        if (exit_signal)
+        {
+            break;
+        }
+
         enviar_comando_uart(comando_estado);
         sleep(2);
     }

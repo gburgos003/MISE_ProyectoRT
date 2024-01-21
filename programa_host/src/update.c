@@ -49,7 +49,6 @@ void mode_1(RingBuffer *buffer)
     /*Leer 1 dato del buffer del UART*/
     while (pop_ring_buffer(buffer, &val) != -1)
     {
-        // fprintf(log_file, "%d\n", val);
         value = ((float) val / 4095.0) * (float) (GRAPH_ROWS - 1); //0-20 unidad de medida
 
         col_pass(round(value), current_col);
@@ -84,6 +83,6 @@ void cambiar_eje_x(working_mode_t t_scale){
     default:
         break;
     }
-    // sprintf(tiempo,"%5d",t_s/1000000);
+    
     memcpy(&screen[(PRINT_ROWS - 4) * PRINT_COLS + (PRINT_COLS - 6)], tiempo, strlen(tiempo));
 }

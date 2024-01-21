@@ -52,13 +52,12 @@ int main()
             clear_to_top();
             print_screen();
             gettimeofday(&t1, NULL);
-
-            //fprintf(log_file, "TOTAL ELAPSED: %lf\n", total_elapased);
         }
     }
 
     pthread_join(handle_input, NULL);
     pthread_join(handle_data_stream, NULL);
+    pthread_join(handle_comunication, NULL);
 
     /* restore the former settings */
     tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
